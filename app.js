@@ -107,6 +107,19 @@ function validate(d) {
 const sum = (k) => data.bases.reduce((s, b) => s + b[k], 0),
   cap = (b) => (b.mono + b.bi) * data.blocks * data.duration * data.days,
   weeks = (h, c) => (c ? fmt(h / c, 1) : "—");
+// La base se obtiene por matrícula del registro fuente de mantenimiento.
+function maintenanceBaseLabel(aircraft) {
+  const base = aircraft.base || data.fleetRecords?.find(
+    (record) => record.id === aircraft.id
+  )?.base;
+  const names = {
+    QET: "Querétaro (QET)",
+    QRO: "Querétaro (QET)",
+    PBC: "Puebla (PBC)",
+    JJC: "Atizapán (JJC)",
+  };
+  return names[base] || base || "Base no indicada";
+}
 function render() {
   const h = sum("hours"),
     c = data.bases.reduce((s, b) => s + cap(b), 0),
@@ -184,7 +197,7 @@ function render() {
   $("students").innerHTML =
     `<div class="bigicon">♧</div><ul><li><b>${fmt(sum("near"))}</b> alumnos tienen 10 h o menos pendientes</li><li>Horas requeridas para ese grupo: <b>${fmt(sum("nearHours"), 1)} h</b></li><li>Distribución:<br>${data.bases.map((b) => `— &nbsp;<b>${esc(b.name)}</b> &nbsp;${fmt(b.near)} alumnos / ${fmt(b.nearHours, 1)} h`).join("<br>")}</li></ul>`;
   $("maintenance").innerHTML =
-    `<div class="bigicon">⚠</div><ul>${data.maintenance.map((m) => `<li><b>${esc(m.id)}:</b> ${fmt(m.hours, 1)} h al próximo servicio (${esc(m.service)})</li>`).join("")}</ul><aside>ⓘ &nbsp;${esc(data.maintenanceNote)}</aside>`;
+    `<div class="bigicon">⚠</div><ul>${data.maintenance.map((m) => `<li><b>${esc(m.id)}</b> · <span>${esc(maintenanceBaseLabel(m))}</span>: ${fmt(m.hours, 1)} h al próximo servicio (${esc(m.service)})</li>`).join("")}</ul><aside>ⓘ &nbsp;${esc(data.maintenanceNote)}</aside>`;
   const messages = data.bases.map(
     (b) =>
       `<b>${esc(b.name)}</b><br>Alumnos: <b>${fmt(b.students)}</b><br>Horas pendientes: <b>${fmt(b.hours, 1)} h</b><br>Aeronaves en rol: <b>${b.mono + b.bi}</b><br>Instructores: <b>${fmt(b.instructors)}</b><br>Alumnos por instructor: <b>${b.instructors ? fmt(b.students / b.instructors, 1) : "—"}</b><br>Asignaciones: <b>${fmt(b.assigned)}</b><br>Cancelaciones (${esc(data.period)}): <b>${fmt(b.cancel)}</b>`,
