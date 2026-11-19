@@ -113,8 +113,8 @@ function maintenanceBaseLabel(aircraft) {
     (record) => record.id === aircraft.id
   )?.base;
   const names = {
-    QET: "QET",
-    QRO: "QET",
+    QET: "QUET",
+    QRO: "QUET",
     PBC: "PBC",
     JJC: "JJC",
   };
