@@ -4,13 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Dashboard Operativo PRAAT</title>
-    <link rel="stylesheet" href="style.css?v=organizado-1" />
+    <link rel="stylesheet" href="style.css?v=semanal-20261119" />
   </head>
   <body>
     <header aria-label="Dashboard Operativo PRAAT, Escuela de Vuelo">
       <h1 data-texto="pagina">Dashboard Operativo PRAAT</h1>
     </header>
-    <div class="dates" id="dates"></div>
+    <div class="dates" id="dates"></div><div class="history-nav"><strong>Historial:</strong> <a href="./">Actual · mantenimiento 19 nov 2026</a> <a href="historial/2026-11-05/">Versión anterior · 5 nov 2026</a> <a href="historial/2026-11-19/">Copia semanal · 19 nov 2026</a></div><section class="week-note"><b>Edición semanal · 19 de noviembre de 2026</b><p id="week-summary"></p></section>
     <main>
       <section id="kpis" class="kpis"></section>
       <div class="mainrow">
@@ -55,7 +55,7 @@
           <div id="maintenance"></div>
         </section>
       </div>
-      <section class="panel training">
+      <section class="panel weekly-report"><h2>Reporte de flota · 19 nov 2026</h2><details><summary>Ver las 23 aeronaves, estados y remanentes del reporte</summary><div class="tablewrap"><table id="report-table"></table></div></details><p class="foot">GO = Good to go · AOG = Aircraft On Ground · OVH = Overhaul. Las fechas de cada fila son las del reporte. «No indicado» no equivale a cero.</p></section><section class="panel training">
         <h2 data-texto="formacion">
           Formación y disponibilidad de instructores
         </h2>
@@ -71,7 +71,7 @@
         <div id="messages"></div>
       </section>
       <p class="source">
-        Fuente: imagen “Dashboard Operativo PRAAT”
+        Fuente de mantenimiento: PRAAT-MNT-CR-003/26, 19/11/2026. Datos operativos anteriores: imagen “Dashboard Operativo PRAAT”.
         <span id="saved">Datos iniciales de la referencia.</span>
       </p>
       <p id="warning" class="warning"></p>
@@ -112,9 +112,9 @@
       </form>
     </dialog>
     <div id="toast" role="status"></div>
-    <script src="datos.js?v=organizado-1"></script>
-    <script src="textos.js?v=organizado-1"></script>
-    <script src="app.js?v=organizado-1"></script>
+    <script src="datos.js?v=semanal-20261119"></script>
+    <script src="textos.js?v=semanal-20261119"></script>
+    <script src="app.js?v=semanal-20261119"></script>
   </body>
 </html>
 

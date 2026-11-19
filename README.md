@@ -103,3 +103,23 @@ Los totales, porcentajes, capacidad teórica y alumnos por instructor se calcula
 `index.html` carga primero `datos.js`, después `textos.js` y al final `app.js`. El JavaScript no necesita compilación. GitHub Pages publica directamente la rama `main`.
 
 Los archivos están formateados con sangría. Puedes abrirlos en un editor de texto o modificarlos desde GitHub.
+
+
+## Ediciones semanales e historial
+
+- [Dashboard actual](https://davidfanvilla.github.io/dashboard-operativo-praat/): mantenimiento al 19/11/2026.
+- [Versión anterior, datos al 05/11/2026](historial/2026-11-05/).
+- [Copia semanal del 19/11/2026](historial/2026-11-19/).
+- [Transcripción del reporte de mantenimiento](historial/2026-11-19/reporte-transcrito.json).
+
+Las copias históricas incluyen su propio HTML, estilos, títulos, datos y lógica. Son de solo lectura y no leen cambios locales del navegador: preservan la versión publicada. Los cambios locales que ya tenías siguen en su clave anterior de almacenamiento y no se borran con esta actualización.
+
+Cada edición tiene una clave de guardado local independiente. Los JSON de otra edición no sustituyen el reporte actual. No cambies la fecha de edición al editar datos: identifica la versión de guardado.
+
+El PDF del 19/11/2026 solo actualiza mantenimiento y estados de flota. Se mantienen el corte de alumnos/demanda del 05/11, roles 02–08/11 e incidencias al 01/11. La capacidad teórica de 840 h sigue asociada a ese rol anterior.
+
+En la edición semanal, `fleetRecords` es el registro fuente: 23 aeronaves, 11 GO, 11 AOG y 1 OVH. Los totales GO se calculan desde ese registro. `goMono`, `goBi`, `totalMono` y `totalBi` permanecen como referencia anterior; no se usan para presentar el desglose de tipo de la flota semanal porque este PDF no lo especifica. Los campos `mono` y `bi` de las bases siguen describiendo el rol histórico, no el estado actual de mantenimiento.
+
+Las matrículas OHB y PDM están clasificadas GO en el documento, con observaciones «EN SERVICIO E2» y «EN SERVICIO E3»; se conserva esa clasificación junto con su salvedad. Los remanentes no indicados se representan con `null`, nunca con cero.
+
+Para otra semana, crea primero una copia histórica de la edición publicada y después actualiza `edition`, `maintenanceCut`, `sourceReport`, `fleetRecords` y `maintenance`. Conserva los cortes de los indicadores que no tengan una fuente nueva.

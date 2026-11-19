@@ -38,6 +38,7 @@ const TEXTOS = {
 
 // ETIQUETAS DEL EDITOR
 const ETIQUETAS_EDITOR = {
+ edition:"Edición del dashboard", maintenanceCut:"Corte de mantenimiento", sourceReport:"Reporte fuente de mantenimiento",
   instructors: "Instructores de la base",
   trainingNote: "Modalidades, instructores especializados y requisitos",
   cut: "Fecha de corte",
