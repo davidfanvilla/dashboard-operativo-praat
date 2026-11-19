@@ -113,10 +113,10 @@ function maintenanceBaseLabel(aircraft) {
     (record) => record.id === aircraft.id
   )?.base;
   const names = {
-    QET: "Querétaro (QET)",
-    QRO: "Querétaro (QET)",
-    PBC: "Puebla (PBC)",
-    JJC: "Atizapán (JJC)",
+    QET: "QET",
+    QRO: "QET",
+    PBC: "PBC",
+    JJC: "JJC",
   };
   return names[base] || base || "Base no indicada";
 }
