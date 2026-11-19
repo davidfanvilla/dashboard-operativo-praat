@@ -2,8 +2,9 @@
 const DATOS_INICIALES = {
   "cut": "2026-11-05",
   "roles": "02–08 nov 2026",
-  "incidents": "2026-11-01",
-  "period": "oct-2026",
+  "incidents": "2026-11-19",
+  "unconfirmedCut": "2026-11-15",
+  "period": "1–19 nov 2026",
   "blocks": 5,
   "duration": 2,
   "days": 7,
@@ -11,7 +12,7 @@ const DATOS_INICIALES = {
   "totalBi": 4,
   "goMono": 10,
   "goBi": 2,
-  "cancellations": 202,
+  "cancellations": 69,
   "trainingNote": "IFR/NOC y bimotor se vuelan únicamente en Querétaro. Cap. Carreto y Cap. Castillo, incluidos en los 7 instructores de esa base, también vuelan VFR: su disponibilidad se comparte entre las tres modalidades. No realizan nocturnos toda la semana. Para iniciar bimotor, el alumno debe completar 155 h visuales y 15 h IFR/NOC.",
   "maintenanceNote": "OHB figura GO con «EN SERVICIO E2» y PDM figura GO con «EN SERVICIO E3»: validar liberación operativa. La nota técnica registra excesos de 50 h: RHP motor izquierdo 53 h, derecho 53.6 h; NTP 50.4 h, considerados para el próximo servicio.",
   "bases": [
@@ -23,8 +24,8 @@ const DATOS_INICIALES = {
       "mono": 6,
       "bi": 2,
       "assigned": 143,
-      "unconfirmed": 16,
-      "cancel": 99,
+      "unconfirmed": 22,
+      "cancel": 26,
       "near": 175,
       "nearHours": 1086.7
     },
@@ -36,8 +37,8 @@ const DATOS_INICIALES = {
       "mono": 2,
       "bi": 0,
       "assigned": 33,
-      "unconfirmed": 24,
-      "cancel": 72,
+      "unconfirmed": 18,
+      "cancel": 28,
       "near": 36,
       "nearHours": 227.1
     },
@@ -49,8 +50,8 @@ const DATOS_INICIALES = {
       "mono": 2,
       "bi": 0,
       "assigned": 46,
-      "unconfirmed": 25,
-      "cancel": 30,
+      "unconfirmed": 16,
+      "cancel": 15,
       "near": 8,
       "nearHours": 50.7
     }
