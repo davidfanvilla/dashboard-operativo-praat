@@ -165,13 +165,13 @@ function render() {
   $("chart").innerHTML = data.bases
     .map(
       (b) =>
-        `<div class="bar" style="height:${(b.hours / max) * 85}%"><strong>${fmt(b.hours, 1)} h</strong><span>${esc(b.name)}</span></div>`,
+        `<div class="bar" data-base="${esc(b.name)}" style="height:${(b.hours / max) * 85}%"><strong>${fmt(b.hours, 1)} h</strong><span>${esc(b.name)}</span></div>`,
     )
     .join("");
   $("shares").innerHTML = data.bases
     .map(
       (b) =>
-        `<div style="flex:${b.hours || 1}">${esc(b.name)}<br>${fmt(h ? (b.hours / h) * 100 : 0, 1)}%</div>`,
+        `<div data-base="${esc(b.name)}" style="flex:${b.hours || 1}">${esc(b.name)}<br>${fmt(h ? (b.hours / h) * 100 : 0, 1)}%</div>`,
     )
     .join("");
   $("table").innerHTML =
@@ -184,7 +184,7 @@ function render() {
     data.bases
       .map(
         (b) =>
-          "<tr>" +
+          `<tr data-base="${esc(b.name)}">` +
           [
             esc(b.name),
             fmt(b.students),
@@ -214,9 +214,9 @@ function render() {
     )
     .join("");
   $("students").innerHTML =
-    `<div class="bigicon">♧</div><ul><li><b>${fmt(sum("near"))}</b> alumnos tienen 10 h o menos pendientes</li><li>Horas requeridas para ese grupo: <b>${fmt(sum("nearHours"), 1)} h</b></li><li>Distribución:<br>${data.bases.map((b) => `— &nbsp;<b>${esc(b.name)}</b> &nbsp;${fmt(b.near)} alumnos / ${fmt(b.nearHours, 1)} h`).join("<br>")}</li></ul>`;
+    `<div class="bigicon">♧</div><ul><li><b>${fmt(sum("near"))}</b> alumnos tienen 10 h o menos pendientes</li><li>Horas requeridas para ese grupo: <b>${fmt(sum("nearHours"), 1)} h</b></li><li>Distribución:<br>${data.bases.map((b) => `— &nbsp;<b class="base-label" data-base="${esc(b.name)}">${esc(b.name)}</b> &nbsp;${fmt(b.near)} alumnos / ${fmt(b.nearHours, 1)} h`).join("<br>")}</li></ul>`;
   $("maintenance").innerHTML =
-    `<div class="bigicon">⚠</div><ul>${data.maintenance.map((m) => `<li><b>${esc(m.id)}</b> · <span>${esc(maintenanceBaseLabel(m))}</span>: ${fmt(m.hours, 1)} h al próximo servicio (${esc(m.service)})</li>`).join("")}</ul><aside>ⓘ &nbsp;${esc(data.maintenanceNote)}</aside>`;
+    `<div class="bigicon">⚠</div><ul>${data.maintenance.map((m) => `<li><b>${esc(m.id)}</b> · <span class="base-label" data-base="${esc(maintenanceBaseLabel(m))}">${esc(maintenanceBaseLabel(m))}</span>: ${fmt(m.hours, 1)} h al próximo servicio (${esc(m.service)})</li>`).join("")}</ul><aside>ⓘ &nbsp;${esc(data.maintenanceNote)}</aside>`;
   const messages = data.bases.map(
     (b) =>
       `<b>${esc(b.name)}</b><br>Alumnos: <b>${fmt(b.students)}</b><br>Horas pendientes: <b>${fmt(b.hours, 1)} h</b><br>Aeronaves en rol: <b>${b.mono + b.bi}</b><br>Instructores: <b>${fmt(b.instructors)}</b><br>Alumnos por instructor: <b>${b.instructors ? fmt(b.students / b.instructors, 1) : "—"}</b><br>Asignaciones: <b>${fmt(b.assigned)}</b><br>Cancelaciones (${esc(data.period)}): <b>${fmt(b.cancel)}</b>`,
@@ -224,7 +224,7 @@ function render() {
   $("messages").innerHTML = messages
     .map(
       (m, i) =>
-        `<div class="message"><span class="badge">${i + 1}</span><span>${m}</span></div>`,
+        `<div class="message" data-base="${esc(data.bases[i].name)}"><span class="badge">${i + 1}</span><span>${m}</span></div>`,
     )
     .join("");
   $("training").textContent = data.trainingNote;
@@ -364,7 +364,7 @@ function renderWeeklyReport() {
   const go = records.filter(r => r.status === "GO").length;
   const aog = records.filter(r => r.status === "AOG").length;
   const ovh = records.filter(r => r.status === "OVH").length;
-  $("fleet").innerHTML = '<div class="fleetcard"><div><b>Flota en reporte</b><br><strong>' + records.length + '</strong> aeronaves</div><div><p><b>' + go + '</b> GO</p><p><b>' + aog + '</b> AOG · <b>' + ovh + '</b> OVH</p></div></div><div class="fleetcard"><div><b>GO por base</b><br><strong>' + go + '</strong> aeronaves</div><div>' + data.bases.map(b => '<p><b>' + esc(b.name) + '</b>: ' + records.filter(r=>r.base===b.name && r.status==="GO").length + '</p>').join('') + '</div></div><p class="foot">Corte: ' + esc(data.maintenanceCut) + '. El reporte no distingue monomotor y bimotor. GO incluye OGV y OHB con observación de servicio.</p>';
+  $("fleet").innerHTML = '<div class="fleetcard"><div><b>Flota en reporte</b><br><strong>' + records.length + '</strong> aeronaves</div><div><p><b>' + go + '</b> GO</p><p><b>' + aog + '</b> AOG · <b>' + ovh + '</b> OVH</p></div></div><div class="fleetcard"><div><b>GO por base</b><br><strong>' + go + '</strong> aeronaves</div><div>' + data.bases.map(b => '<p><b class="base-label" data-base="' + esc(b.name) + '">' + esc(b.name) + '</b>: ' + records.filter(r=>r.base===b.name && r.status==="GO").length + '</p>').join('') + '</div></div><p class="foot">Corte: ' + esc(data.maintenanceCut) + '. El reporte no distingue monomotor y bimotor. GO incluye OGV y OHB con observación de servicio.</p>';
   $("report-table").innerHTML = '<thead><tr>' + ['Base','Estado','Matrícula','Remanente (h)','OVH motor (h)','OVH hélice (h)','Fecha de registro','Próximo evento','Observación'].map(t=>'<th>'+t+'</th>').join('') + '</tr></thead><tbody>' + records.map(r=>'<tr data-base="' + esc(r.base) + '">' + [r.base,r.status,r.id,r.hours===null?'No indicado':fmt(r.hours,1),r.engine===null?'—':fmt(r.engine,1),r.propeller===null?'—':fmt(r.propeller,1),r.date,r.service,r.note||'—'].map(v=>'<td>'+esc(v)+'</td>').join('') + '</tr>').join('') + '</tbody>';
   $("week-summary").textContent = 'Actualización de mantenimiento al ' + data.maintenanceCut + ': ' + go + ' GO, ' + aog + ' AOG y ' + ovh + ' OVH. QET: 7 GO; PBC: 2; JJC: 2. Los indicadores operativos tienen cortes propios en el encabezado. La capacidad de 840 h corresponde al rol del 02–08 nov, no a una capacidad recalculada de esta semana.';
 }

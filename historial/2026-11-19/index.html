@@ -174,12 +174,6 @@ h2 small {
   border-radius: 3px 3px 0 0;
   min-height: 2px;
 }
-.bar:nth-child(2) {
-  background: linear-gradient(120deg, #a8d8f5, #61ade0);
-}
-.bar:nth-child(3) {
-  background: linear-gradient(120deg, #e5003c, #b8002e);
-}
 .bar strong {
   position: absolute;
   top: -22px;
@@ -220,12 +214,6 @@ h3 {
   background: var(--navy);
   border-right: 1px solid white;
 }
-#shares > div:nth-child(2) {
-  background: #69b7e8;
-}
-#shares > div:nth-child(3) {
-  background: var(--red);
-}
 .tablewrap {
   overflow: auto;
   padding: 12px 6px 0;
@@ -249,12 +237,6 @@ tbody tr td:first-child {
   background: var(--navy);
   color: white;
   font-weight: bold;
-}
-tbody tr:nth-child(2) td:first-child {
-  background: #62afe3;
-}
-tbody tr:nth-child(3) td:first-child {
-  background: var(--red);
 }
 tfoot {
   font-weight: bold;
@@ -832,16 +814,31 @@ header h1 {
 .week-note p{margin:7px 0 0}.weekly-report{margin-top:15px}.weekly-report summary{cursor:pointer;padding:16px;font-weight:bold;color:#123465}.weekly-report table{min-width:1100px}.weekly-report td{font-size:12px}.maintenance #maintenance{align-items:flex-start;flex-wrap:wrap}.maintenance #maintenance aside{max-width:none;border-left:0;border-top:1px solid #c9d9e6;padding:12px 0 0;width:100%}
 @media print{.history-nav{display:none}.weekly-report{break-inside:auto}.weekly-report details:not([open]){display:none}}
 
-/* Colores de la columna Base del reporte de flota. */
-#report-table tbody tr > td:first-child {
-  background: var(--navy);
+
+
+/* Un color por base, compartido por todas las secciones. */
+[data-base] {
+  --base-color: var(--navy);
+}
+[data-base="PBC"] {
+  --base-color: #00665f;
+}
+[data-base="JJC"] {
+  --base-color: #861b47;
+}
+#chart .bar[data-base],
+#shares > div[data-base],
+#table tbody tr[data-base] > td:first-child,
+#report-table tbody tr[data-base] > td:first-child,
+#servicios-programados tbody tr[data-base] > td:first-child,
+.message[data-base] .badge {
+  background: var(--base-color);
   color: white;
 }
-#report-table tbody tr[data-base="PBC"] > td:first-child {
-  background: #00665f;
-}
-#report-table tbody tr[data-base="JJC"] > td:first-child {
-  background: #861b47;
+#chart .bar[data-base] :is(strong, span),
+.base-label[data-base],
+.message[data-base] > span:last-child > b:first-child {
+  color: var(--base-color);
 }
 </style>
   </head>
@@ -1531,13 +1528,13 @@ function render() {
   $("chart").innerHTML = data.bases
     .map(
       (b) =>
-        `<div class="bar" style="height:${(b.hours / max) * 85}%"><strong>${fmt(b.hours, 1)} h</strong><span>${esc(b.name)}</span></div>`,
+        `<div class="bar" data-base="${esc(b.name)}" style="height:${(b.hours / max) * 85}%"><strong>${fmt(b.hours, 1)} h</strong><span>${esc(b.name)}</span></div>`,
     )
     .join("");
   $("shares").innerHTML = data.bases
     .map(
       (b) =>
-        `<div style="flex:${b.hours || 1}">${esc(b.name)}<br>${fmt(h ? (b.hours / h) * 100 : 0, 1)}%</div>`,
+        `<div data-base="${esc(b.name)}" style="flex:${b.hours || 1}">${esc(b.name)}<br>${fmt(h ? (b.hours / h) * 100 : 0, 1)}%</div>`,
     )
     .join("");
   $("table").innerHTML =
@@ -1550,7 +1547,7 @@ function render() {
     data.bases
       .map(
         (b) =>
-          "<tr>" +
+          `<tr data-base="${esc(b.name)}">` +
           [
             esc(b.name),
             fmt(b.students),
@@ -1580,7 +1577,7 @@ function render() {
     )
     .join("");
   $("students").innerHTML =
-    `<div class="bigicon">♧</div><ul><li><b>${fmt(sum("near"))}</b> alumnos tienen 10 h o menos pendientes</li><li>Horas requeridas para ese grupo: <b>${fmt(sum("nearHours"), 1)} h</b></li><li>Distribución:<br>${data.bases.map((b) => `— &nbsp;<b>${esc(b.name)}</b> &nbsp;${fmt(b.near)} alumnos / ${fmt(b.nearHours, 1)} h`).join("<br>")}</li></ul>`;
+    `<div class="bigicon">♧</div><ul><li><b>${fmt(sum("near"))}</b> alumnos tienen 10 h o menos pendientes</li><li>Horas requeridas para ese grupo: <b>${fmt(sum("nearHours"), 1)} h</b></li><li>Distribución:<br>${data.bases.map((b) => `— &nbsp;<b class="base-label" data-base="${esc(b.name)}">${esc(b.name)}</b> &nbsp;${fmt(b.near)} alumnos / ${fmt(b.nearHours, 1)} h`).join("<br>")}</li></ul>`;
   $("maintenance").innerHTML =
     `<div class="bigicon">⚠</div><ul>${data.maintenance.map((m) => `<li><b>${esc(m.id)}:</b> ${fmt(m.hours, 1)} h al próximo servicio (${esc(m.service)})</li>`).join("")}</ul><aside>ⓘ &nbsp;${esc(data.maintenanceNote)}</aside>`;
   const messages = data.bases.map(
@@ -1590,7 +1587,7 @@ function render() {
   $("messages").innerHTML = messages
     .map(
       (m, i) =>
-        `<div class="message"><span class="badge">${i + 1}</span><span>${m}</span></div>`,
+        `<div class="message" data-base="${esc(data.bases[i].name)}"><span class="badge">${i + 1}</span><span>${m}</span></div>`,
     )
     .join("");
   $("training").textContent = data.trainingNote;
@@ -1730,7 +1727,7 @@ function renderWeeklyReport() {
   const go = records.filter(r => r.status === "GO").length;
   const aog = records.filter(r => r.status === "AOG").length;
   const ovh = records.filter(r => r.status === "OVH").length;
-  $("fleet").innerHTML = '<div class="fleetcard"><div><b>Flota en reporte</b><br><strong>' + records.length + '</strong> aeronaves</div><div><p><b>' + go + '</b> GO</p><p><b>' + aog + '</b> AOG · <b>' + ovh + '</b> OVH</p></div></div><div class="fleetcard"><div><b>GO por base</b><br><strong>' + go + '</strong> aeronaves</div><div>' + data.bases.map(b => '<p><b>' + esc(b.name) + '</b>: ' + records.filter(r=>r.base===b.name && r.status==="GO").length + '</p>').join('') + '</div></div><p class="foot">Corte: ' + esc(data.maintenanceCut) + '. El reporte no distingue monomotor y bimotor. GO incluye OHB y PDM con observación de servicio.</p>';
+  $("fleet").innerHTML = '<div class="fleetcard"><div><b>Flota en reporte</b><br><strong>' + records.length + '</strong> aeronaves</div><div><p><b>' + go + '</b> GO</p><p><b>' + aog + '</b> AOG · <b>' + ovh + '</b> OVH</p></div></div><div class="fleetcard"><div><b>GO por base</b><br><strong>' + go + '</strong> aeronaves</div><div>' + data.bases.map(b => '<p><b class="base-label" data-base="' + esc(b.name) + '">' + esc(b.name) + '</b>: ' + records.filter(r=>r.base===b.name && r.status==="GO").length + '</p>').join('') + '</div></div><p class="foot">Corte: ' + esc(data.maintenanceCut) + '. El reporte no distingue monomotor y bimotor. GO incluye OHB y PDM con observación de servicio.</p>';
   $("report-table").innerHTML = '<thead><tr>' + ['Base','Estado','Matrícula','Remanente (h)','OVH motor (h)','OVH hélice (h)','Fecha de registro','Próximo evento','Observación'].map(t=>'<th>'+t+'</th>').join('') + '</tr></thead><tbody>' + records.map(r=>'<tr data-base="' + esc(r.base) + '">' + [r.base,r.status,r.id,r.hours===null?'No indicado':fmt(r.hours,1),r.engine===null?'—':fmt(r.engine,1),r.propeller===null?'—':fmt(r.propeller,1),r.date,r.service,r.note||'—'].map(v=>'<td>'+esc(v)+'</td>').join('') + '</tr>').join('') + '</tbody>';
   const previous = 12;
   $("week-summary").textContent = 'Actualización de mantenimiento al 19/11/2026: ' + go + ' GO (' + (go-previous) + ' frente a la versión anterior), ' + aog + ' AOG y ' + ovh + ' OVH. QET: 7 GO; PBC: 2; JJC: 2. Alumnos, demanda, instructores, asignaciones y cancelaciones no se actualizan con este PDF. La capacidad de 840 h corresponde al rol del 02–08 nov, no a una capacidad recalculada de esta semana.';
