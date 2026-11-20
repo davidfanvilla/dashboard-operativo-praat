@@ -825,3 +825,15 @@ header h1 {
 .history-nav a{color:#123465}.week-note{margin:12px 14px;padding:14px 18px;border-left:4px solid #69b7e8;background:#eaf4fb;font-size:14px;line-height:1.5}
 .week-note p{margin:7px 0 0}.weekly-report{margin-top:15px}.weekly-report summary{cursor:pointer;padding:16px;font-weight:bold;color:#123465}.weekly-report table{min-width:1100px}.weekly-report td{font-size:12px}.maintenance #maintenance{align-items:flex-start;flex-wrap:wrap}.maintenance #maintenance aside{max-width:none;border-left:0;border-top:1px solid #c9d9e6;padding:12px 0 0;width:100%}
 @media print{.history-nav{display:none}.weekly-report{break-inside:auto}.weekly-report details:not([open]){display:none}}
+
+/* Colores de la columna Base del reporte de flota. */
+#report-table tbody tr > td:first-child {
+  background: var(--navy);
+  color: white;
+}
+#report-table tbody tr[data-base="PBC"] > td:first-child {
+  background: #00665f;
+}
+#report-table tbody tr[data-base="JJC"] > td:first-child {
+  background: #861b47;
+}
