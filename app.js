@@ -53,6 +53,11 @@ function validate(d) {
     !Array.isArray(d.maintenance)
   )
     throw Error("El archivo no tiene la estructura del dashboard.");
+  if (!d.maintenanceCut || d.maintenanceCut < initial.maintenanceCut) {
+    for (const field of ["maintenanceCut", "sourceReport", "fleetRecords", "maintenance", "maintenanceNote"]) {
+      d[field] = clone(initial[field]);
+    }
+  }
   // Incorpora los nuevos cortes cuando la copia guardada es anterior.
   const newUnconfirmed = !d.unconfirmedCut || d.unconfirmedCut < initial.unconfirmedCut;
   const newCancellations = d.incidents < initial.incidents;
@@ -359,10 +364,9 @@ function renderWeeklyReport() {
   const go = records.filter(r => r.status === "GO").length;
   const aog = records.filter(r => r.status === "AOG").length;
   const ovh = records.filter(r => r.status === "OVH").length;
-  $("fleet").innerHTML = '<div class="fleetcard"><div><b>Flota en reporte</b><br><strong>' + records.length + '</strong> aeronaves</div><div><p><b>' + go + '</b> GO</p><p><b>' + aog + '</b> AOG · <b>' + ovh + '</b> OVH</p></div></div><div class="fleetcard"><div><b>GO por base</b><br><strong>' + go + '</strong> aeronaves</div><div>' + data.bases.map(b => '<p><b>' + esc(b.name) + '</b>: ' + records.filter(r=>r.base===b.name && r.status==="GO").length + '</p>').join('') + '</div></div><p class="foot">Corte: ' + esc(data.maintenanceCut) + '. El reporte no distingue monomotor y bimotor. GO incluye OHB y PDM con observación de servicio.</p>';
+  $("fleet").innerHTML = '<div class="fleetcard"><div><b>Flota en reporte</b><br><strong>' + records.length + '</strong> aeronaves</div><div><p><b>' + go + '</b> GO</p><p><b>' + aog + '</b> AOG · <b>' + ovh + '</b> OVH</p></div></div><div class="fleetcard"><div><b>GO por base</b><br><strong>' + go + '</strong> aeronaves</div><div>' + data.bases.map(b => '<p><b>' + esc(b.name) + '</b>: ' + records.filter(r=>r.base===b.name && r.status==="GO").length + '</p>').join('') + '</div></div><p class="foot">Corte: ' + esc(data.maintenanceCut) + '. El reporte no distingue monomotor y bimotor. GO incluye OGV y OHB con observación de servicio.</p>';
   $("report-table").innerHTML = '<thead><tr>' + ['Base','Estado','Matrícula','Remanente (h)','OVH motor (h)','OVH hélice (h)','Fecha de registro','Próximo evento','Observación'].map(t=>'<th>'+t+'</th>').join('') + '</tr></thead><tbody>' + records.map(r=>'<tr>' + [r.base,r.status,r.id,r.hours===null?'No indicado':fmt(r.hours,1),r.engine===null?'—':fmt(r.engine,1),r.propeller===null?'—':fmt(r.propeller,1),r.date,r.service,r.note||'—'].map(v=>'<td>'+esc(v)+'</td>').join('') + '</tr>').join('') + '</tbody>';
-  const previous = 12;
-  $("week-summary").textContent = 'Actualización de mantenimiento al 19/11/2026: ' + go + ' GO (' + (go-previous) + ' frente a la versión anterior), ' + aog + ' AOG y ' + ovh + ' OVH. QET: 7 GO; PBC: 2; JJC: 2. Los indicadores operativos tienen cortes propios en el encabezado. La capacidad de 840 h corresponde al rol del 02–08 nov, no a una capacidad recalculada de esta semana.';
+  $("week-summary").textContent = 'Actualización de mantenimiento al ' + data.maintenanceCut + ': ' + go + ' GO, ' + aog + ' AOG y ' + ovh + ' OVH. QET: 7 GO; PBC: 2; JJC: 2. Los indicadores operativos tienen cortes propios en el encabezado. La capacidad de 840 h corresponde al rol del 02–08 nov, no a una capacidad recalculada de esta semana.';
 }
 
 render();
