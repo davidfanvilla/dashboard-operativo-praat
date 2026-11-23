@@ -1,0 +1,260 @@
+{
+  "source": "PRAAT-MNT-CR-003/26 · 20/11/2026",
+  "cut": "2026-11-20",
+  "records": [
+    {
+      "base": "QET",
+      "status": "AOG",
+      "id": "XB-GOJ",
+      "hours": 9.9,
+      "service": "E4",
+      "date": "15/11/2026",
+      "note": "ALTERNADOR",
+      "engine": 19.7,
+      "propeller": 119.7
+    },
+    {
+      "base": "QET",
+      "status": "AOG",
+      "id": "XB-NAN",
+      "hours": null,
+      "service": "—",
+      "date": "MNT",
+      "note": "AWC vencido; trabajos de mantenimiento",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-NAP",
+      "hours": 12.8,
+      "service": "E1",
+      "date": "19/11/2026",
+      "note": "",
+      "engine": 951.3,
+      "propeller": 751.3
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-NCK",
+      "hours": 38.9,
+      "service": "E2",
+      "date": "19/11/2026",
+      "note": "",
+      "engine": 1374.4,
+      "propeller": 1174.4
+    },
+    {
+      "base": "QET",
+      "status": "AOG",
+      "id": "XB-NTP",
+      "hours": 36.2,
+      "service": "E2",
+      "date": "02/11/2026",
+      "note": "SPINNER",
+      "engine": 349.1,
+      "propeller": 149.1
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-OGV",
+      "hours": 50,
+      "service": "E2",
+      "date": "20/11/2026",
+      "note": "EN SERVICIO E1",
+      "engine": 1957.1,
+      "propeller": 1757.1
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-OHB",
+      "hours": 50,
+      "service": "E3",
+      "date": "20/11/2026",
+      "note": "EN SERVICIO E2",
+      "engine": 739.3,
+      "propeller": 539.3
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-PDL",
+      "hours": 42.1,
+      "service": "E4",
+      "date": "19/11/2026",
+      "note": "",
+      "engine": 902.1,
+      "propeller": 702.1
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-PLH",
+      "hours": 29,
+      "service": "E2",
+      "date": "19/11/2026",
+      "note": "",
+      "engine": 1561.6,
+      "propeller": 1284.7
+    },
+    {
+      "base": "QET",
+      "status": "AOG",
+      "id": "XB-PMV",
+      "hours": null,
+      "service": "—",
+      "date": "Trabajos de mantenimiento",
+      "note": "Documentación pendiente para AWC",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-RHP",
+      "hours": 16.2,
+      "service": "E2",
+      "date": "19/11/2026",
+      "note": "",
+      "engine": 1391.3,
+      "propeller": 191.3
+    },
+    {
+      "base": "QET",
+      "status": "AOG",
+      "id": "XB-SUV",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Documentación pendiente para AWC",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "PBC",
+      "status": "OVH",
+      "id": "XB-ODC",
+      "hours": null,
+      "service": "OVERHAUL",
+      "date": "OVERHAUL",
+      "note": "OVERHAUL",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "PBC",
+      "status": "GO",
+      "id": "XB-PBH",
+      "hours": 41.9,
+      "service": "E4",
+      "date": "19/11/2026",
+      "note": "",
+      "engine": 1661.8,
+      "propeller": 1461.8
+    },
+    {
+      "base": "PBC",
+      "status": "GO",
+      "id": "XB-PMJ",
+      "hours": 24.4,
+      "service": "E1",
+      "date": "19/11/2026",
+      "note": "",
+      "engine": 254.9,
+      "propeller": 54.9
+    },
+    {
+      "base": "PBC",
+      "status": "AOG",
+      "id": "XB-ITD",
+      "hours": null,
+      "service": "25 hrs",
+      "date": "11/05/2026",
+      "note": "Documentación pendiente para AWC",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "GO",
+      "id": "XB-OWB",
+      "hours": 25.6,
+      "service": "E3",
+      "date": "19/11/2026",
+      "note": "",
+      "engine": 344.1,
+      "propeller": 1293.8
+    },
+    {
+      "base": "JJC",
+      "status": "GO",
+      "id": "XB-PDM",
+      "hours": 50,
+      "service": "E4",
+      "date": "19/11/2026",
+      "note": "",
+      "engine": 1286.8,
+      "propeller": 1086.8
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-AWN",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Documentación pendiente para AWC",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-FOJ",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Aeronave a nombre de otro propietario",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-KHN",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Aeronave a nombre de otro propietario",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-BZB",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Aeronave a nombre de otro propietario",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-IKT",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Aeronave a nombre de otro propietario",
+      "engine": null,
+      "propeller": null
+    }
+  ],
+  "notes": "OGV y OHB figuran GO con observaciones «EN SERVICIO E1» y «EN SERVICIO E2», respectivamente. La liberación operativa está pendiente de confirmación. PDM figura GO sin observación de servicio en este corte. La nota técnica registra excesos de 50 h: RHP motor izquierdo 53 h, derecho 53.6 h; NTP 50.4 h, considerados para el próximo servicio."
+}
