@@ -1,0 +1,1797 @@
+<!doctype html>
+<html lang="es">
+  <head><base href="../../">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard Operativo PRAAT</title>
+    <style>:root {
+  --navy: #123465;
+  --red: #ce0034;
+  --blue: #69b7e8;
+  --line: #b9cbdc;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f8fbfd;
+  color: #08132d;
+  font:
+    16px Arial,
+    sans-serif;
+}
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px;
+  background: #102d54;
+  color: white;
+  gap: 12px;
+}
+nav > span {
+  font-weight: bold;
+}
+nav > div {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+button,
+.button {
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 9px 12px;
+  border: 1px solid #bacbdc;
+  border-radius: 6px;
+  background: white;
+  color: #14335c;
+  display: inline-block;
+}
+button:hover,
+.button:hover {
+  background: #e4eff8;
+}
+button:focus-visible,
+.button:focus-within,
+input:focus-visible {
+  outline: 3px solid #69b7e8;
+  outline-offset: 2px;
+}
+header {
+  background: white url(referencia.png) top center/100% auto no-repeat;
+  aspect-ratio: 14.2/1;
+  min-height: 70px;
+}
+h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.dates {
+  padding: 7px 20px;
+  background: white;
+  color: #46536a;
+  font-size: 13px;
+  border-bottom: 1px solid #dce5ec;
+}
+main {
+  padding: 12px 14px 18px;
+  max-width: 2200px;
+  margin: auto;
+}
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.kpi {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: linear-gradient(135deg, white, #f4f7fa);
+  padding: 12px 10px;
+  text-align: center;
+  box-shadow: 0 3px 5px #12346508;
+}
+.ktitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  gap: 10px;
+  min-height: 38px;
+  font-weight: bold;
+  font-size: 15px;
+}
+.icon {
+  font-size: 30px;
+  color: var(--navy);
+}
+.kvalue {
+  font-size: clamp(24px, 2.7vw, 47px);
+  font-weight: 800;
+  margin: 12px 0 6px;
+  white-space: nowrap;
+}
+.kvalue:after {
+  content: "";
+  display: block;
+  margin: 9px auto 0;
+  width: 52px;
+  height: 3px;
+  background: var(--red);
+}
+.kpi small {
+  font-size: 11px;
+}
+.mainrow {
+  display: grid;
+  grid-template-columns: 25% 49.5% 1fr;
+  gap: 10px;
+}
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: white;
+  box-shadow: 0 3px 5px #1234650a;
+  overflow: hidden;
+}
+h2 {
+  margin: 0;
+  padding: 7px 13px;
+  background: linear-gradient(#234b7c, #15325b);
+  color: white;
+  font-size: 21px;
+}
+h2 small {
+  font-size: 17px;
+  font-weight: normal;
+}
+#chart {
+  height: 210px;
+  padding: 17px 16px 0;
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  border-bottom: 1px solid #aaa;
+  margin: 0 16px 28px;
+  background: repeating-linear-gradient(
+    to top,
+    transparent 0,
+    transparent 39px,
+    #e6ebf0 40px
+  );
+}
+.bar {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(120deg, #194479, #082552);
+  border-radius: 3px 3px 0 0;
+  min-height: 2px;
+}
+.bar strong {
+  position: absolute;
+  top: -22px;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 15px;
+}
+.bar span {
+  position: absolute;
+  bottom: -23px;
+  width: 100%;
+  text-align: center;
+}
+.share {
+  margin: 10px;
+  padding: 8px;
+  border: 1px solid #c9d9e6;
+  border-radius: 8px;
+  background: #f2f7fc;
+}
+h3 {
+  margin: 0 0 10px;
+  font-size: 17px;
+}
+#shares {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+}
+#shares > div {
+  padding: 5px 1px;
+  min-width: 45px;
+  background: var(--navy);
+  border-right: 1px solid white;
+}
+.tablewrap {
+  overflow: auto;
+  padding: 12px 6px 0;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  text-align: center;
+}
+th,
+td {
+  padding: 11px 5px;
+  border: 1px solid #b9bec6;
+}
+th {
+  background: linear-gradient(#cae5f7, #9cd0f1);
+  font-size: 12px;
+}
+tbody tr td:first-child {
+  background: var(--navy);
+  color: white;
+  font-weight: bold;
+}
+tfoot {
+  font-weight: bold;
+  background: #e8ebef;
+}
+.foot {
+  font-size: 12px;
+  font-style: italic;
+  margin: 14px 16px;
+  line-height: 1.5;
+}
+.fleetcard {
+  margin: 14px 10px;
+  padding: 12px;
+  background: linear-gradient(120deg, #cce5f8, #f7fafc);
+  border: 1px solid #c8dcea;
+  border-radius: 10px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.fleetcard > div:first-child {
+  flex: 1;
+  border-right: 1px solid #9babc0;
+  font-size: 19px;
+}
+.fleetcard strong {
+  font-size: 29px;
+}
+.fleetcard p {
+  font-size: 14px;
+  margin: 10px 0;
+}
+.secondrow {
+  display: grid;
+  grid-template-columns: 1fr 1.04fr;
+  gap: 14px;
+  margin-top: 15px;
+}
+.students h2 {
+  background: linear-gradient(#639d5d, #3f7c3b);
+}
+.maintenance h2 {
+  background: linear-gradient(#cc3752, #af1934);
+}
+#students,
+#maintenance {
+  display: flex;
+  gap: 18px;
+  padding: 14px;
+  align-items: center;
+  min-height: 140px;
+}
+.bigicon {
+  font-size: 60px;
+  padding: 18px;
+  color: #37763b;
+  background: #e9f3e8;
+  border-radius: 7px;
+}
+#students ul {
+  list-style-type: square;
+  padding-left: 19px;
+  margin: 0;
+  line-height: 1.45;
+}
+#students li::marker {
+  color: #4d8c43;
+}
+#maintenance .bigicon {
+  color: var(--red);
+  background: #fce8ed;
+}
+#maintenance ul {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.5;
+  list-style-type: square;
+}
+#maintenance li::marker {
+  color: var(--red);
+}
+#maintenance aside {
+  border-left: 1px solid #9ba8ba;
+  padding-left: 18px;
+  max-width: 235px;
+  font-style: italic;
+  font-size: 14px;
+}
+.messages {
+  display: flex;
+  margin-top: 15px;
+}
+.messages h2 {
+  display: flex;
+  align-items: center;
+  min-width: 225px;
+  font-size: 24px;
+}
+.messages > div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 12px 0;
+}
+.message {
+  padding: 0 16px;
+  border-right: 1px solid #a6b5c6;
+  display: flex;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 1.35;
+}
+.badge {
+  background: var(--red);
+  border-radius: 50%;
+  color: white;
+  font-size: 23px;
+  min-width: 29px;
+  height: 29px;
+  text-align: center;
+}
+.source {
+  color: #657287;
+  font-size: 12px;
+  margin-bottom: 0;
+}
+.warning {
+  font-size: 12px;
+  color: #99420b;
+}
+.warning:empty {
+  display: none;
+}
+dialog {
+  width: 900px;
+  max-width: 95vw;
+  border: 1px solid #bacbdc;
+  border-radius: 14px;
+  padding: 22px;
+  max-height: 92vh;
+}
+dialog::backdrop {
+  background: #081b39aa;
+}
+.dialoghead {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+.dialoghead h2 {
+  background: none;
+  color: #123465;
+  padding: 0;
+}
+.dialoghead p,
+.note {
+  font-size: 13px;
+  color: #5c687a;
+}
+fieldset {
+  border: 1px solid #d1dce8;
+  border-radius: 8px;
+  margin: 16px 0;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+legend {
+  font-weight: bold;
+  color: #123465;
+}
+label.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13px;
+}
+input {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #b7c7d8;
+  border-radius: 5px;
+  font: inherit;
+}
+.actions {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+  position: sticky;
+  bottom: -22px;
+  background: white;
+  padding: 12px 0;
+}
+.primary {
+  background: #123465;
+  color: white;
+}
+#toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #123465;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 7px;
+  display: none;
+}
+@media (min-width: 1700px) {
+  #chart {
+    height: 250px;
+  }
+  table {
+    font-size: 16px;
+  }
+  th {
+    font-size: 14px;
+  }
+  .kpi {
+    min-height: 140px;
+  }
+}
+@media (max-width: 1150px) {
+  .kpis {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .mainrow {
+    grid-template-columns: 1fr 2fr;
+  }
+  .fleet {
+    grid-column: 1/-1;
+  }
+  #fleet {
+    display: flex;
+  }
+  .fleetcard {
+    flex: 1;
+  }
+  .secondrow {
+    grid-template-columns: 1fr;
+  }
+  .messages {
+    display: block;
+  }
+  .messages > div {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .kvalue {
+    font-size: 32px;
+  }
+}
+@media (max-width: 650px) {
+  nav {
+    align-items: start;
+    flex-direction: column;
+  }
+  header {
+    min-height: 0;
+  }
+  .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mainrow {
+    display: block;
+  }
+  .panel {
+    margin-bottom: 12px;
+  }
+  .secondrow {
+    display: block;
+  }
+  .messages > div {
+    grid-template-columns: 1fr;
+  }
+  .message {
+    border: 0;
+  }
+  #fleet {
+    display: block;
+  }
+  #maintenance {
+    flex-wrap: wrap;
+  }
+  fieldset {
+    grid-template-columns: 1fr 1fr;
+  }
+  .bigicon {
+    display: none;
+  }
+  .ktitle {
+    font-size: 14px;
+  }
+  main {
+    padding: 10px;
+  }
+  h2 {
+    font-size: 19px;
+  }
+}
+@media print {
+  nav,
+  .source,
+  #warning,
+  dialog,
+  #toast {
+    display: none !important;
+  }
+  body {
+    background: white;
+    font-size: 12px;
+  }
+  main {
+    padding: 3px;
+  }
+  .kpis {
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+  }
+  .ktitle {
+    font-size: 10px;
+  }
+  .icon {
+    font-size: 19px;
+  }
+  .kvalue {
+    font-size: 25px;
+  }
+  .kpi {
+    padding: 6px;
+  }
+  .mainrow {
+    display: grid;
+    grid-template-columns: 25% 49% 1fr;
+  }
+  .fleet {
+    grid-column: auto;
+  }
+  #fleet {
+    display: block;
+  }
+  h2 {
+    font-size: 15px;
+  }
+  .secondrow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .messages {
+    display: flex;
+  }
+  .messages h2 {
+    min-width: 150px;
+  }
+  .messages > div {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .message {
+    font-size: 11px;
+  }
+  table {
+    font-size: 10px;
+  }
+  th {
+    font-size: 9px;
+  }
+  th,
+  td {
+    padding: 8px 3px;
+  }
+  #chart {
+    height: 150px;
+  }
+  .bar strong {
+    font-size: 11px;
+  }
+  .bigicon {
+    font-size: 30px;
+    padding: 8px;
+  }
+  #students,
+  #maintenance {
+    font-size: 11px;
+    padding: 8px;
+    gap: 8px;
+  }
+  #maintenance aside {
+    font-size: 10px;
+  }
+  .panel {
+    break-inside: avoid;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @page {
+    size: A3 landscape;
+    margin: 8mm;
+  }
+}
+:root {
+}
+.kpis {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+.kpi,
+.mainrow > * {
+  min-width: 0;
+}
+.kvalue {
+  font-size: clamp(22px, 2.5vw, 47px);
+}
+.ktitle {
+  font-size: clamp(11px, 1vw, 16px);
+  gap: 6px;
+}
+.icon {
+  font-size: clamp(20px, 2vw, 30px);
+}
+table {
+  table-layout: fixed;
+  font-size: clamp(10px, 0.92vw, 16px);
+}
+th {
+  font-size: clamp(9px, 0.78vw, 14px);
+  overflow-wrap: anywhere;
+}
+td {
+  padding: 10px 3px;
+  overflow-wrap: anywhere;
+}
+header {
+  position: relative;
+}
+header:after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  top: 65%;
+  width: 55%;
+  height: 31%;
+  background: white;
+}
+.fleetcard {
+  gap: 9px;
+}
+.fleetcard > div:first-child {
+  font-size: 17px;
+}
+.fleetcard p {
+  font-size: 12px;
+}
+@media (max-width: 1150px) {
+  .kpis {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .ktitle {
+    font-size: 14px;
+  }
+}
+@media (max-width: 650px) {
+  .kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  table {
+    min-width: 680px;
+  }
+}
+@media print {
+  .kpis {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+.kpi:nth-child(2) {
+  container-type: inline-size;
+}
+.kpi:nth-child(2) .kvalue {
+  font-size: clamp(14px, 15cqw, 36px);
+}
+
+nav {
+  background: transparent;
+  border-top: 1px solid #dce5ec;
+  color: #64748b;
+  justify-content: center;
+  padding: 12px 14px;
+  margin-top: 12px;
+}
+nav > div {
+  justify-content: center;
+  gap: 6px;
+}
+nav button,
+nav .button {
+  font-size: 11px;
+  padding: 6px 9px;
+  background: transparent;
+  border-color: #dce5ec;
+  color: #64748b;
+}
+nav button:hover,
+nav .button:hover {
+  background: #edf2f7;
+  color: #123465;
+}
+@media (max-width: 650px) {
+  nav {
+    align-items: center;
+  }
+}
+
+.messages > div {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+}
+.training {
+  margin-top: 15px;
+}
+.training p {
+  padding: 0 16px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+.indicators table {
+  min-width: 850px;
+}
+.indicators .tablewrap {
+  overflow-x: auto;
+}
+.message {
+  line-height: 1.55;
+}
+@media (max-width: 650px) {
+  .messages > div {
+    grid-template-columns: 1fr;
+  }
+  .message {
+    padding: 12px 16px;
+  }
+}
+@media print {
+  .indicators table {
+    min-width: 0;
+  }
+  .messages > div {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Título editable sobre el encabezado de referencia. */
+header h1 {
+  position: absolute;
+  clip-path: none;
+  overflow: visible;
+  left: 18%;
+  right: 26%;
+  top: 8%;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0 0 12px;
+  background: white;
+  font-size: clamp(12px, 3vw, 54px);
+  font-weight: 800;
+  line-height: 1.15;
+  z-index: 1;
+}
+
+
+/* Ediciones e historial */
+.history-nav{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:12px 18px;background:#edf3f9;font-size:13px}
+.history-nav a{color:#123465}.week-note{margin:12px 14px;padding:14px 18px;border-left:4px solid #69b7e8;background:#eaf4fb;font-size:14px;line-height:1.5}
+.week-note p{margin:7px 0 0}.weekly-report{margin-top:15px}.weekly-report summary{cursor:pointer;padding:16px;font-weight:bold;color:#123465}.weekly-report table{min-width:1100px}.weekly-report td{font-size:12px}.maintenance #maintenance{align-items:flex-start;flex-wrap:wrap}.maintenance #maintenance aside{max-width:none;border-left:0;border-top:1px solid #c9d9e6;padding:12px 0 0;width:100%}
+@media print{.history-nav{display:none}.weekly-report{break-inside:auto}.weekly-report details:not([open]){display:none}}
+
+/* Un color por base, compartido por todas las secciones. */
+[data-base] {
+  --base-color: var(--navy);
+}
+[data-base="PBC"] {
+  --base-color: #00665f;
+}
+[data-base="JJC"] {
+  --base-color: #861b47;
+}
+#chart .bar[data-base],
+#shares > div[data-base],
+#table tbody tr[data-base] > td:first-child,
+#report-table tbody tr[data-base] > td:first-child,
+#servicios-programados tbody tr[data-base] > td:first-child,
+.message[data-base] .badge {
+  background: var(--base-color);
+  color: white;
+}
+#chart .bar[data-base] :is(strong, span),
+.base-label[data-base],
+.message[data-base] > span:last-child > b:first-child {
+  color: var(--base-color);
+}
+</style>
+  </head>
+  <body><div class="history-nav"><strong>Archivo histórico · 23 nov 2026</strong><a href="./">Volver al dashboard actual</a></div>
+    <header aria-label="Dashboard Operativo PRAAT, Escuela de Vuelo">
+      <h1 data-texto="pagina">Dashboard Operativo PRAAT</h1>
+    </header>
+    <div class="dates" id="dates"></div>
+    <p class="dates">No confirmados: corte del 15 de noviembre, con turnos registrados del 18 al 22. Cancelaciones: eventos registrados del 1 al 19 de noviembre, según la fecha de registro.</p><div class="history-nav"><strong>Historial:</strong> <a href="./">Corte archivado · 23 nov 2026</a> <a href="historial/2026-11-05/">Versión anterior · 5 nov 2026</a> <a href="historial/2026-11-19/">Corte · 19 nov 2026</a> <a href="historial/2026-11-20/">Corte · 20 nov 2026</a></div><section class="week-note"><b>Corte de mantenimiento · 23 de noviembre de 2026</b><p id="week-summary"></p></section>
+    <main>
+      <section id="kpis" class="kpis"></section>
+      <div class="mainrow">
+        <section class="panel demand">
+          <h2>
+            <span data-texto="demanda"></span>
+            <small data-texto="subtituloDemanda"></small>
+          </h2>
+          <div id="chart"></div>
+          <div class="share">
+            <h3 data-texto="participacion">◕ Participación de la demanda</h3>
+            <div id="shares"></div>
+          </div>
+        </section>
+        <section class="panel indicators">
+          <h2 data-texto="indicadores">▦ Indicadores por base</h2>
+          <div class="tablewrap"><table id="table"></table></div>
+          <p class="foot">
+            *Plazo pendiente de calcular: requiere horas pendientes por etapa y
+            disponibilidad real de instructores, aeronaves y nocturnos. La
+            capacidad teórica solo mide espacios de programación de aeronaves;
+            no es capacidad efectiva ni fecha de conclusión.
+          </p>
+        </section>
+        <section class="panel fleet">
+          <h2 data-texto="flota">✈ Flota</h2>
+          <div id="fleet"></div>
+          <p class="foot">
+            ⓘ QET corresponde a QRO en el reporte de mantenimiento.
+          </p>
+        </section>
+      </div>
+      <div class="secondrow">
+        <section class="panel students">
+          <h2 data-texto="alumnos">✓ Alumnos próximos a completar</h2>
+          <div id="students"></div>
+        </section>
+        <section class="panel maintenance">
+          <h2 data-texto="mantenimiento">
+            ⚒ Mantenimiento y continuidad operativa
+          </h2>
+          <div id="maintenance"></div>
+        </section>
+      </div>
+      <section class="panel training" id="servicios-programados" aria-labelledby="titulo-servicios">
+        <h2 id="titulo-servicios">Entradas a servicio programadas · 19–22 nov 2026</h2>
+        <p>Según los roles del 16 al 22 de noviembre. Para QET se usó la revisión del 18 de noviembre. Cada bloque equivale a 2 h programadas.</p>
+        <div class="tablewrap">
+          <table aria-labelledby="titulo-servicios" style="min-width: 480px">
+            <thead><tr><th scope="col">Base</th><th scope="col">Matrícula</th><th scope="col">Servicio</th><th scope="col">Bloqueado en el rol</th></tr></thead>
+            <tbody>
+              <tr data-base="QUET"><td>QUET</td><td>XB-OHB</td><td>E2</td><td>Jueves 19 y viernes 20</td></tr>
+              <tr data-base="JJC"><td>JJC</td><td>XB-PDM</td><td>E3</td><td>Jueves 19</td></tr>
+              <tr data-base="QUET"><td>QUET</td><td>XB-OGV</td><td>E1</td><td>Sábado 21</td></tr>
+              <tr data-base="QUET"><td>QUET</td><td>XB-NAP</td><td>E1</td><td>Domingo 22</td></tr>
+              <tr data-base="PBC"><td>PBC</td><td>XB-PMJ</td><td>E1</td><td>Domingo 22</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Corte posterior, 23 de noviembre.</strong> XB-OGV y XB-OHB figuran GO sin observación de servicio. La tabla muestra los bloqueos del rol del 16 al 22 de noviembre.</p>
+        <p><strong>Regreso pendiente de confirmación.</strong> Los días bloqueados reflejan el rol. Para calcular los días en tierra y la fecha de regreso falta confirmar la duración del servicio y la liberación de cada avión.</p>
+      </section>
+      <section class="panel weekly-report"><h2>Reporte de flota · 23 nov 2026</h2><details><summary>Ver las 23 aeronaves, estados y remanentes del reporte</summary><div class="tablewrap"><table id="report-table"></table></div></details><p class="foot">GO = Good to go · AOG = Aircraft On Ground · OVH = Overhaul. Las fechas de cada fila son las del reporte. «No indicado» no equivale a cero.</p></section><section class="panel training">
+        <h2 data-texto="formacion">
+          Formación y disponibilidad de instructores
+        </h2>
+        <p id="training"></p>
+        <p>
+          IFR/NOC y bimotor comparten instructores con VFR. La disponibilidad de
+          ambos capitanes y los requisitos de avance condicionan la atención de
+          estas etapas.
+        </p>
+      </section>
+      <section class="messages panel">
+        <h2 data-texto="mensajes">⚑ Mensajes clave</h2>
+        <div id="messages"></div>
+      </section>
+      <p class="source">
+        Fuente de mantenimiento: PRAAT-MNT-CR-003/26, 23/11/2026. Datos operativos anteriores: imagen “Dashboard Operativo PRAAT”.
+        <span id="saved">Datos iniciales de la referencia.</span>
+      </p>
+      <p id="warning" class="warning"></p>
+    </main>
+    <nav>
+      <div>
+        <button id="edit" hidden disabled>✎ Editar datos</button
+        ><button id="export">Exportar JSON</button
+        ><label class="button" hidden style="display:none"
+          >Importar JSON<input
+            id="import" disabled
+            type="file"
+            accept="application/json"
+            hidden /></label
+        ><button onclick="window.print()">Imprimir / PDF</button
+        ><button id="full">Pantalla completa</button>
+      </div>
+    </nav>
+    <dialog id="editor">
+      <form id="form">
+        <div class="dialoghead">
+          <div>
+            <h2>Editar datos operativos</h2>
+            <p>Los totales, gráficas y mensajes se recalculan al guardar.</p>
+          </div>
+          <button type="button" id="close" aria-label="Cerrar">✕</button>
+        </div>
+        <div id="fields"></div>
+        <p class="note">
+          Los cambios se guardan en este navegador. Exporta un JSON para
+          respaldarlos o trasladarlos a otro equipo.
+        </p>
+        <div class="actions">
+          <button type="button" id="reset">Cargar datos publicados</button
+          ><button type="button" id="cancel">Cancelar</button
+          ><button class="primary" type="submit">Guardar cambios</button>
+        </div>
+      </form>
+    </dialog>
+    <div id="toast" role="status"></div>
+    <script>
+// EDICIÓN SEMANAL. El corte de mantenimiento se actualiza por separado.
+const DATOS_INICIALES = {
+  "cut": "2026-11-05",
+  "roles": "02–08 nov 2026",
+  "incidents": "2026-11-19",
+  "unconfirmedCut": "2026-11-15",
+  "period": "1–19 nov 2026",
+  "blocks": 5,
+  "duration": 2,
+  "days": 7,
+  "totalMono": 19,
+  "totalBi": 4,
+  "goMono": 10,
+  "goBi": 2,
+  "cancellations": 69,
+  "trainingNote": "IFR/NOC y bimotor se vuelan únicamente en Querétaro. Cap. Carreto y Cap. Castillo, incluidos en los 7 instructores de esa base, también vuelan VFR: su disponibilidad se comparte entre las tres modalidades. No realizan nocturnos toda la semana. Para iniciar bimotor, el alumno debe completar 155 h visuales y 15 h IFR/NOC.",
+  "maintenanceNote": "XB-RHP registra 5.5 h al próximo E2. XB-NTP cambió a GO y conserva remanentes fechados el 02/11. El reporte anota para el próximo servicio los excesos del intervalo de 50 h: RHP motor izquierdo 53 h y derecho 53.6 h, y NTP 50.4 h.",
+  "bases": [
+    {
+      "name": "QET",
+      "instructors": 7,
+      "students": 329,
+      "hours": 7613.4,
+      "mono": 6,
+      "bi": 2,
+      "assigned": 143,
+      "unconfirmed": 22,
+      "cancel": 26,
+      "near": 175,
+      "nearHours": 1086.7
+    },
+    {
+      "name": "PBC",
+      "instructors": 3,
+      "students": 67,
+      "hours": 1816.3,
+      "mono": 2,
+      "bi": 0,
+      "assigned": 33,
+      "unconfirmed": 18,
+      "cancel": 28,
+      "near": 36,
+      "nearHours": 227.1
+    },
+    {
+      "name": "JJC",
+      "instructors": 2,
+      "students": 32,
+      "hours": 1449,
+      "mono": 2,
+      "bi": 0,
+      "assigned": 46,
+      "unconfirmed": 16,
+      "cancel": 15,
+      "near": 8,
+      "nearHours": 50.7
+    }
+  ],
+  "maintenance": [
+    {
+      "id": "XB-RHP",
+      "hours": 5.5,
+      "service": "E2"
+    },
+    {
+      "id": "XB-PLH",
+      "hours": 13.7,
+      "service": "E2"
+    },
+    {
+      "id": "XB-OWB",
+      "hours": 18.3,
+      "service": "E3"
+    },
+    {
+      "id": "XB-PMJ",
+      "hours": 20.6,
+      "service": "E1"
+    },
+    {
+      "id": "XB-NCK",
+      "hours": 22.9,
+      "service": "E2"
+    },
+    {
+      "id": "XB-PDL",
+      "hours": 25.6,
+      "service": "E4"
+    },
+    {
+      "id": "XB-PBH",
+      "hours": 30.5,
+      "service": "E4"
+    },
+    {
+      "id": "XB-NTP",
+      "hours": 36.2,
+      "service": "E2"
+    },
+    {
+      "id": "XB-PDM",
+      "hours": 36.9,
+      "service": "E4"
+    },
+    {
+      "id": "XB-OGV",
+      "hours": 38.9,
+      "service": "E2"
+    },
+    {
+      "id": "XB-OHB",
+      "hours": 42,
+      "service": "E3"
+    },
+    {
+      "id": "XB-NAP",
+      "hours": 50,
+      "service": "E2"
+    }
+  ],
+  "edition": "2026-11-19",
+  "maintenanceCut": "2026-11-23",
+  "sourceReport": "PRAAT-MNT-CR-003/26 · 23/11/2026",
+  "fleetRecords": [
+    {
+      "base": "QET",
+      "status": "AOG",
+      "id": "XB-GOJ",
+      "hours": 9.9,
+      "service": "E4",
+      "date": "15/11/2026",
+      "note": "ALTERNADOR",
+      "engine": 19.7,
+      "propeller": 119.7
+    },
+    {
+      "base": "QET",
+      "status": "AOG",
+      "id": "XB-NAN",
+      "hours": null,
+      "service": "—",
+      "date": "MNT",
+      "note": "AWC vencido; trabajos de mantenimiento",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-NAP",
+      "hours": 50,
+      "service": "E2",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 940.4,
+      "propeller": 740.4
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-NCK",
+      "hours": 22.9,
+      "service": "E2",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 1358.4,
+      "propeller": 1158.4
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-NTP",
+      "hours": 36.2,
+      "service": "E2",
+      "date": "02/11/2026",
+      "note": "",
+      "engine": 349.1,
+      "propeller": 149.1
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-OGV",
+      "hours": 38.9,
+      "service": "E2",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 1946,
+      "propeller": 1746
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-OHB",
+      "hours": 42,
+      "service": "E3",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 731.3,
+      "propeller": 531.3
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-PDL",
+      "hours": 25.6,
+      "service": "E4",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 885.6,
+      "propeller": 685.6
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-PLH",
+      "hours": 13.7,
+      "service": "E2",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 1546.3,
+      "propeller": 1269.4
+    },
+    {
+      "base": "QET",
+      "status": "AOG",
+      "id": "XB-PMV",
+      "hours": null,
+      "service": "—",
+      "date": "Trabajos de mantenimiento",
+      "note": "Documentación pendiente para AWC",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "QET",
+      "status": "GO",
+      "id": "XB-RHP",
+      "hours": 5.5,
+      "service": "E2",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 1380.6,
+      "propeller": 180.6
+    },
+    {
+      "base": "QET",
+      "status": "AOG",
+      "id": "XB-SUV",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Documentación pendiente para AWC",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "PBC",
+      "status": "OVH",
+      "id": "XB-ODC",
+      "hours": null,
+      "service": "OVERHAUL",
+      "date": "OVERHAUL",
+      "note": "OVERHAUL",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "PBC",
+      "status": "GO",
+      "id": "XB-PBH",
+      "hours": 30.5,
+      "service": "E4",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 1650.4,
+      "propeller": 1450.4
+    },
+    {
+      "base": "PBC",
+      "status": "GO",
+      "id": "XB-PMJ",
+      "hours": 20.6,
+      "service": "E1",
+      "date": "20/11/2026",
+      "note": "",
+      "engine": 251.1,
+      "propeller": 51.1
+    },
+    {
+      "base": "PBC",
+      "status": "AOG",
+      "id": "XB-ITD",
+      "hours": null,
+      "service": "25 hrs",
+      "date": "11/05/2026",
+      "note": "Documentación pendiente para AWC",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "GO",
+      "id": "XB-OWB",
+      "hours": 18.3,
+      "service": "E3",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 336.8,
+      "propeller": 1286.5
+    },
+    {
+      "base": "JJC",
+      "status": "GO",
+      "id": "XB-PDM",
+      "hours": 36.9,
+      "service": "E4",
+      "date": "22/11/2026",
+      "note": "",
+      "engine": 1273.7,
+      "propeller": 1073.7
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-AWN",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Documentación pendiente para AWC",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-FOJ",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Aeronave a nombre de otro propietario",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-KHN",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Aeronave a nombre de otro propietario",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-BZB",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Aeronave a nombre de otro propietario",
+      "engine": null,
+      "propeller": null
+    },
+    {
+      "base": "JJC",
+      "status": "AOG",
+      "id": "XB-IKT",
+      "hours": null,
+      "service": "—",
+      "date": "—",
+      "note": "Aeronave a nombre de otro propietario",
+      "engine": null,
+      "propeller": null
+    }
+  ]
+};
+</script>
+    <script>
+// TÍTULOS. Cambia textos entre comillas; conserva las claves y el orden.
+const TEXTOS = {
+  pagina: "Dashboard Operativo PRAAT",
+  demanda: "▥ Demanda por base",
+  subtituloDemanda: "(horas pendientes)",
+  participacion: "◕ Participación de la demanda",
+  indicadores: "▦ Indicadores por base",
+  flota: "✈ Flota",
+  alumnos: "✓ Alumnos próximos a completar",
+  mantenimiento: "⚒ Mantenimiento y continuidad operativa",
+  formacion: "Formación y disponibilidad de instructores",
+  mensajes: "⚑ Mensajes clave",
+  plazoPendiente: "Pendiente de calcular",
+  kpis: [
+    "Alumnos registrados",
+    "Horas pendientes",
+    "Aeronaves GO",
+    "Capacidad teórica semanal",
+    "Asignaciones en rol semanal",
+    "No confirmados",
+    "Cancelaciones",
+    "Alumnos con ≤10 h pendientes",
+  ],
+  columnas: [
+    "Base",
+    "Alumnos",
+    "Horas pendientes",
+    "Aeronaves en rol",
+    "Configuración",
+    "Capacidad teórica/sem",
+    "Asignados",
+    "No confirmados",
+    "Cancelaciones",
+    "Instructores",
+    "Plazo estimado de atención*",
+  ],
+};
+
+// ETIQUETAS DEL EDITOR
+const ETIQUETAS_EDITOR = {
+ edition:"Edición del dashboard", maintenanceCut:"Corte de mantenimiento", sourceReport:"Reporte fuente de mantenimiento",
+  instructors: "Instructores de la base",
+  trainingNote: "Modalidades, instructores especializados y requisitos",
+  cut: "Fecha de corte",
+  roles: "Periodo de roles",
+  incidents: "Corte de incidencias",
+  period: "Periodo de cancelaciones",
+  blocks: "Bloques diarios",
+  duration: "Horas por bloque",
+  days: "Días por semana",
+  totalMono: "Flota total: monomotores",
+  totalBi: "Flota total: bimotores",
+  goMono: "GO: monomotores",
+  goBi: "GO: bimotores",
+  cancellations: "Cancelaciones totales reportadas",
+  maintenanceNote: "Observación de mantenimiento",
+  name: "Base",
+  students: "Alumnos",
+  hours: "Horas pendientes",
+  mono: "Monomotores en rol",
+  bi: "Bimotores en rol",
+  assigned: "Asignaciones",
+  unconfirmed: "No confirmados",
+  cancel: "Cancelaciones de la base",
+  near: "Alumnos con ≤10 h pendientes",
+  nearHours: "Horas del grupo ≤10 h",
+  id: "Matrícula",
+  service: "Servicio",
+};
+
+
+</script>
+    <script>
+// FUNCIONAMIENTO. Edita datos.js y textos.js para cambiar contenido.
+const initial = DATOS_INICIALES;
+const $ = (id) => document.getElementById(id),
+  key = "praat-dashboard-" + (initial.edition || "v1"),
+  clone = (x) => JSON.parse(JSON.stringify(x)),
+  fmt = (n, d = 0) =>
+    Number(n).toLocaleString("en-US", {
+      minimumFractionDigits: d,
+      maximumFractionDigits: d,
+    }),
+  esc = (x) =>
+    String(x).replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[c],
+    );
+function aplicarTextos() {
+  document.title = TEXTOS.pagina;
+  document.querySelectorAll("[data-texto]").forEach((el) => {
+    el.textContent = TEXTOS[el.dataset.texto];
+  });
+}
+aplicarTextos();
+let data = clone(initial),
+  savedAt = null;
+try {
+  const s = null;
+  if (s) {
+    validate(s.data);
+    data = s.data;
+    savedAt = s.savedAt;
+  }
+} catch {}
+function validate(d) {
+  if (initial.edition && d?.edition !== initial.edition) throw Error("Este JSON corresponde a otra edición. Consúltalo en el historial; no reemplaza el reporte actual.");
+  if (d && Array.isArray(d.bases)) {
+    d.bases.forEach((b, i) => {
+      if (b.instructors === undefined)
+        b.instructors = initial.bases[i]?.instructors ?? 0;
+    });
+    if (d.trainingNote === undefined) d.trainingNote = initial.trainingNote;
+  }
+  if (
+    !d ||
+    !Array.isArray(d.bases) ||
+    d.bases.length !== 3 ||
+    !Array.isArray(d.maintenance)
+  )
+    throw Error("El archivo no tiene la estructura del dashboard.");
+  if (!d.maintenanceCut || d.maintenanceCut < initial.maintenanceCut) {
+    for (const field of ["maintenanceCut", "sourceReport", "fleetRecords", "maintenance", "maintenanceNote"]) {
+      d[field] = clone(initial[field]);
+    }
+  }
+  // Incorpora los nuevos cortes cuando la copia guardada es anterior.
+  const newUnconfirmed = !d.unconfirmedCut || d.unconfirmedCut < initial.unconfirmedCut;
+  const newCancellations = d.incidents < initial.incidents;
+  if (newUnconfirmed) d.unconfirmedCut = initial.unconfirmedCut;
+  if (newCancellations) {
+    d.incidents = initial.incidents;
+    d.period = initial.period;
+    d.cancellations = initial.cancellations;
+  }
+  d.bases.forEach((base, index) => {
+    const published = initial.bases.find((item) => item.name === base.name) || initial.bases[index];
+    if (newUnconfirmed) base.unconfirmed = published.unconfirmed;
+    if (newCancellations) base.cancel = published.cancel;
+  });
+  for (const k of [
+    "cut",
+    "roles",
+    "incidents",
+    "period",
+    "maintenanceNote",
+    "trainingNote",
+  ])
+    if (typeof d[k] !== "string") throw Error("Falta el campo " + k);
+  for (const k of [
+    "blocks",
+    "duration",
+    "days",
+    "totalMono",
+    "totalBi",
+    "goMono",
+    "goBi",
+    "cancellations",
+  ])
+    if (!Number.isFinite(d[k]) || d[k] < 0) throw Error("Valor inválido: " + k);
+  d.bases.forEach((b) => {
+    if (typeof b.name !== "string") throw Error("Base inválida");
+    for (const k of [
+      "students",
+      "instructors",
+      "hours",
+      "mono",
+      "bi",
+      "assigned",
+      "unconfirmed",
+      "cancel",
+      "near",
+      "nearHours",
+    ])
+      if (!Number.isFinite(b[k]) || b[k] < 0)
+        throw Error("Valor inválido: " + k);
+    if (b.near > b.students)
+      throw Error(
+        "Los alumnos próximos a completar no pueden superar el total de alumnos.",
+      );
+  });
+  d.maintenance.forEach((m) => {
+    if (
+      typeof m.id !== "string" ||
+      typeof m.service !== "string" ||
+      !Number.isFinite(m.hours) ||
+      m.hours < 0
+    )
+      throw Error("Mantenimiento inválido.");
+  });
+}
+const sum = (k) => data.bases.reduce((s, b) => s + b[k], 0),
+  cap = (b) => (b.mono + b.bi) * data.blocks * data.duration * data.days,
+  weeks = (h, c) => (c ? fmt(h / c, 1) : "—");
+// La base se obtiene por matrícula del registro fuente de mantenimiento.
+function maintenanceBaseLabel(aircraft) {
+  const base = aircraft.base || data.fleetRecords?.find(
+    (record) => record.id === aircraft.id
+  )?.base;
+  const names = {
+    QET: "QUET",
+    QRO: "QUET",
+    PBC: "PBC",
+    JJC: "JJC",
+  };
+  return names[base] || base || "Base no indicada";
+}
+function render() {
+  const h = sum("hours"),
+    c = data.bases.reduce((s, b) => s + cap(b), 0),
+    g = data.fleetRecords ? data.fleetRecords.filter(r => r.status === "GO").length : data.goMono + data.goBi;
+  const kpis = [
+    ["♙", TEXTOS.kpis[0], fmt(sum("students"))],
+    ["◷", TEXTOS.kpis[1], fmt(h, 1) + " h"],
+    ["✈", TEXTOS.kpis[2], fmt(g)],
+    ["▱", TEXTOS.kpis[3], fmt(c) + " h"],
+    ["▦", TEXTOS.kpis[4], fmt(sum("assigned"))],
+    ["ⓘ", TEXTOS.kpis[5], fmt(sum("unconfirmed"))],
+    ["⊗", TEXTOS.kpis[6] + " " + data.period, fmt(data.cancellations)],
+    ["♙", TEXTOS.kpis[7], fmt(sum("near"))],
+  ];
+  $("dates").textContent =
+    `Mantenimiento: ${data.maintenanceCut || data.cut} | Alumnos y demanda: ${data.cut} | Roles: ${data.roles} | No confirmados: corte ${data.unconfirmedCut} | Cancelaciones: corte ${data.incidents}`;
+  $("kpis").innerHTML = kpis
+    .map(
+      ([icon, title, value], i) =>
+        `<article class="kpi"><div class="ktitle"><span class="icon">${icon}</span>${esc(title)}</div><div class="kvalue">${value}</div>${i === 3 ? `<small>${data.blocks} bloques × ${data.duration} h × ${data.days} días × aeronaves en rol</small>` : ""}</article>`,
+    )
+    .join("");
+  const max = Math.max(...data.bases.map((b) => b.hours), 1);
+  $("chart").innerHTML = data.bases
+    .map(
+      (b) =>
+        `<div class="bar" data-base="${esc(b.name)}" style="height:${(b.hours / max) * 85}%"><strong>${fmt(b.hours, 1)} h</strong><span>${esc(b.name)}</span></div>`,
+    )
+    .join("");
+  $("shares").innerHTML = data.bases
+    .map(
+      (b) =>
+        `<div data-base="${esc(b.name)}" style="flex:${b.hours || 1}">${esc(b.name)}<br>${fmt(h ? (b.hours / h) * 100 : 0, 1)}%</div>`,
+    )
+    .join("");
+  $("table").innerHTML =
+    "<thead><tr>" +
+    TEXTOS.columnas
+      .map((texto, i) => (i === 8 ? texto + " " + esc(data.period) : texto))
+      .map((x) => `<th>${x}</th>`)
+      .join("") +
+    "</tr></thead><tbody>" +
+    data.bases
+      .map(
+        (b) =>
+          `<tr data-base="${esc(b.name)}">` +
+          [
+            esc(b.name),
+            fmt(b.students),
+            fmt(b.hours, 1),
+            b.mono + b.bi,
+            `${b.mono} mono${b.bi ? " / " + b.bi + " bi" : ""}`,
+            fmt(cap(b)) + " h",
+            fmt(b.assigned),
+            fmt(b.unconfirmed),
+            fmt(b.cancel),
+            fmt(b.instructors),
+            esc(TEXTOS.plazoPendiente),
+          ]
+            .map((x) => `<td>${x}</td>`)
+            .join("") +
+          "</tr>",
+      )
+      .join("") +
+    `</tbody><tfoot><tr>${["Total", fmt(sum("students")), fmt(h, 1), sum("mono") + sum("bi"), sum("mono") + " mono / " + sum("bi") + " bi", fmt(c) + " h", fmt(sum("assigned")), fmt(sum("unconfirmed")), fmt(data.cancellations), fmt(sum("instructors")), esc(TEXTOS.plazoPendiente)].map((x) => `<td>${x}</td>`).join("")}</tr></tfoot>`;
+  $("fleet").innerHTML = [
+    ["Flota total", data.totalMono, data.totalBi],
+    ["Flota GO", data.goMono, data.goBi],
+  ]
+    .map(
+      ([t, m, b]) =>
+        `<div class="fleetcard"><div><b>${t}</b><br><strong>${m + b}</strong> aeronaves</div><div><p>✈ &nbsp;<b>${m}</b> monomotores</p><p>✈ &nbsp;<b>${b}</b> bimotores</p></div></div>`,
+    )
+    .join("");
+  $("students").innerHTML =
+    `<div class="bigicon">♧</div><ul><li><b>${fmt(sum("near"))}</b> alumnos tienen 10 h o menos pendientes</li><li>Horas requeridas para ese grupo: <b>${fmt(sum("nearHours"), 1)} h</b></li><li>Distribución:<br>${data.bases.map((b) => `— &nbsp;<b class="base-label" data-base="${esc(b.name)}">${esc(b.name)}</b> &nbsp;${fmt(b.near)} alumnos / ${fmt(b.nearHours, 1)} h`).join("<br>")}</li></ul>`;
+  $("maintenance").innerHTML =
+    `<div class="bigicon">⚠</div><ul>${data.maintenance.map((m) => `<li><b>${esc(m.id)}</b> · <span class="base-label" data-base="${esc(maintenanceBaseLabel(m))}">${esc(maintenanceBaseLabel(m))}</span>: ${fmt(m.hours, 1)} h al próximo servicio (${esc(m.service)})</li>`).join("")}</ul><aside>ⓘ &nbsp;${esc(data.maintenanceNote)}</aside>`;
+  const messages = data.bases.map(
+    (b) =>
+      `<b>${esc(b.name)}</b><br>Alumnos: <b>${fmt(b.students)}</b><br>Horas pendientes: <b>${fmt(b.hours, 1)} h</b><br>Aeronaves en rol: <b>${b.mono + b.bi}</b><br>Instructores: <b>${fmt(b.instructors)}</b><br>Alumnos por instructor: <b>${b.instructors ? fmt(b.students / b.instructors, 1) : "—"}</b><br>Asignaciones: <b>${fmt(b.assigned)}</b><br>Cancelaciones (${esc(data.period)}): <b>${fmt(b.cancel)}</b>`,
+  );
+  $("messages").innerHTML = messages
+    .map(
+      (m, i) =>
+        `<div class="message" data-base="${esc(data.bases[i].name)}"><span class="badge">${i + 1}</span><span>${m}</span></div>`,
+    )
+    .join("");
+  $("training").textContent = data.trainingNote;
+  renderWeeklyReport();
+
+  const warnings = [];
+  if (sum("cancel") !== data.cancellations)
+    warnings.push(
+      `La referencia indica ${data.cancellations} cancelaciones totales; el desglose por base suma ${sum("cancel")}. Diferencia pendiente de conciliar: ${fmt(data.cancellations - sum("cancel"))}.`,
+    );
+  if (!data.fleetRecords && g !== sum("mono") + sum("bi"))
+    warnings.push(
+      "Las aeronaves GO y las aeronaves en rol son distintas; la capacidad usa las aeronaves en rol.",
+    );
+  $("warning").textContent = warnings.join(" ");
+  $("saved").textContent = savedAt
+    ? "Último guardado local: " +
+      new Date(savedAt).toLocaleString("es-MX") +
+      "."
+    : "Datos publicados de esta edición; los indicadores anteriores conservan sus fechas.";
+}
+function toast(t) {
+  $("toast").textContent = t;
+  $("toast").style.display = "block";
+  setTimeout(() => ($("toast").style.display = "none"), 3500);
+}
+function save(d) {
+  validate(d);
+  const time = new Date().toISOString();
+  localStorage.setItem(key, JSON.stringify({ data: d, savedAt: time }));
+  data = d;
+  savedAt = time;
+  render();
+  toast("Cambios guardados en este navegador");
+}
+const labels = { ...ETIQUETAS_EDITOR, incidents: "Corte de cancelaciones", unconfirmedCut: "Corte de no confirmados" };
+function field(path, k, v) {
+  const numeric = typeof v === "number";
+  return `<label class="field">${esc(labels[k] || k)}<input name="${path}" type="${numeric ? "number" : ["cut", "incidents", "unconfirmedCut"].includes(k) ? "date" : "text"}" ${numeric ? 'min="0" step="' + (["hours", "nearHours", "duration"].includes(k) ? "0.1" : "1") + '"' : ""} value="${esc(v)}" required></label>`;
+}
+function openEditor() {
+  let html = "<fieldset><legend>General, flota y programación</legend>";
+  for (const [k, v] of Object.entries(data))
+    if (!Array.isArray(v) && !["goMono","goBi","totalMono","totalBi"].includes(k)) html += field(k, k, v);
+  html += "</fieldset>";
+  data.bases.forEach(
+    (b, i) =>
+      (html += `<fieldset><legend>${esc(b.name)}</legend>${Object.entries(b)
+        .map(([k, v]) => field(`bases.${i}.${k}`, k, v))
+        .join("")}</fieldset>`),
+  );
+  html +=
+    "<fieldset><legend>Próximos servicios de mantenimiento</legend>" +
+    data.maintenance
+      .map((m, i) =>
+        Object.entries(m)
+          .map(([k, v]) => field(`maintenance.${i}.${k}`, k, v))
+          .join(""),
+      )
+      .join("") +
+    "</fieldset>";
+  $("fields").innerHTML = html;
+  $("editor").showModal();
+}
+$("edit").onclick = openEditor;
+$("close").onclick = $("cancel").onclick = () => $("editor").close();
+$("form").onsubmit = (e) => {
+  e.preventDefault();
+  const draft = clone(data);
+  for (const input of $("fields").querySelectorAll("input")) {
+    const keys = input.name.split(".");
+    let obj = draft;
+    for (const k of keys.slice(0, -1)) obj = obj[k];
+    obj[keys.at(-1)] =
+      input.type === "number" ? Number(input.value) : input.value.trim();
+  }
+  try {
+    save(draft);
+    $("editor").close();
+  } catch (e) {
+    toast(e.message);
+  }
+};
+$("reset").onclick = () => {
+  if (
+    confirm(
+      "¿Cargar los datos publicados en datos.js? Se reemplazarán los cambios locales de este navegador.",
+    )
+  ) {
+    try {
+      save(clone(initial));
+      $("editor").close();
+    } catch (e) {
+      toast(e.message);
+    }
+  }
+};
+$("export").onclick = () => {
+  const blob = new Blob(
+    [JSON.stringify({ schema: "praat-v1", data, savedAt }, null, 2)],
+    { type: "application/json" },
+  );
+  const url = URL.createObjectURL(blob),
+    a = document.createElement("a");
+  a.href = url;
+  a.download = "PRAAT-datos-" + data.cut + ".json";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+$("import").onchange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    if (file.size > 1000000) throw Error("El archivo es demasiado grande.");
+    const parsed = JSON.parse(await file.text());
+    const d = parsed.data || parsed;
+    validate(d);
+    save(d);
+  } catch (e) {
+    toast("No se importó: " + e.message);
+  }
+  e.target.value = "";
+};
+$("full").onclick = async () => {
+  try {
+    if (document.fullscreenElement) await document.exitFullscreen();
+    else await document.documentElement.requestFullscreen();
+  } catch {
+    toast("Utiliza F11 para pantalla completa.");
+  }
+};
+
+/** Reporte semanal: el estado GO se toma del PDF, no del rol histórico. */
+function renderWeeklyReport() {
+  if (!data.fleetRecords) return;
+  const records = data.fleetRecords;
+  const go = records.filter(r => r.status === "GO").length;
+  const aog = records.filter(r => r.status === "AOG").length;
+  const ovh = records.filter(r => r.status === "OVH").length;
+  $("fleet").innerHTML = '<div class="fleetcard"><div><b>Flota en reporte</b><br><strong>' + records.length + '</strong> aeronaves</div><div><p><b>' + go + '</b> GO</p><p><b>' + aog + '</b> AOG · <b>' + ovh + '</b> OVH</p></div></div><div class="fleetcard"><div><b>GO por base</b><br><strong>' + go + '</strong> aeronaves</div><div>' + data.bases.map(b => '<p><b class="base-label" data-base="' + esc(b.name) + '">' + esc(b.name) + '</b>: ' + records.filter(r=>r.base===b.name && r.status==="GO").length + '</p>').join('') + '</div></div><p class="foot">Corte: ' + esc(data.maintenanceCut) + '. El reporte no distingue monomotor y bimotor.</p>';
+  $("report-table").innerHTML = '<thead><tr>' + ['Base','Estado','Matrícula','Remanente (h)','OVH motor (h)','OVH hélice (h)','Fecha de registro','Próximo evento','Observación'].map(t=>'<th>'+t+'</th>').join('') + '</tr></thead><tbody>' + records.map(r=>'<tr data-base="' + esc(r.base) + '">' + [r.base,r.status,r.id,r.hours===null?'No indicado':fmt(r.hours,1),r.engine===null?'—':fmt(r.engine,1),r.propeller===null?'—':fmt(r.propeller,1),r.date,r.service,r.note||'—'].map(v=>'<td>'+esc(v)+'</td>').join('') + '</tr>').join('') + '</tbody>';
+  $("week-summary").textContent = 'Actualización de mantenimiento al ' + data.maintenanceCut + ': ' + go + ' GO, ' + aog + ' AOG y ' + ovh + ' OVH. Por base: ' + data.bases.map(b => b.name + ': ' + records.filter(r => r.base === b.name && r.status === 'GO').length + ' GO').join('; ') + '. Los indicadores operativos tienen cortes propios en el encabezado. La capacidad de 840 h corresponde al rol del 02–08 nov, no a una capacidad recalculada de esta semana.';
+}
+
+render();
+</script>
+  </body>
+</html>

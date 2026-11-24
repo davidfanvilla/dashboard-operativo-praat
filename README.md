@@ -109,7 +109,8 @@ Los archivos están formateados con sangría. Puedes abrirlos en un editor de te
 
 ## Ediciones semanales e historial
 
-- [Dashboard actual](https://davidfanvilla.github.io/dashboard-operativo-praat/): mantenimiento al 23/11/2026.
+- [Dashboard actual](https://davidfanvilla.github.io/dashboard-operativo-praat/): mantenimiento al 24/11/2026.
+- [Corte del 23/11/2026](historial/2026-11-23/).
 - [Corte del 20/11/2026](historial/2026-11-20/).
 - [Versión anterior, datos al 05/11/2026](historial/2026-11-05/).
 - [Copia semanal del 19/11/2026](historial/2026-11-19/).
@@ -125,4 +126,4 @@ En la edición semanal, `fleetRecords` es el registro fuente: 23 aeronaves, 11 G
 
 Las matrículas OHB y PDM están clasificadas GO en el documento, con observaciones «EN SERVICIO E2» y «EN SERVICIO E3»; se conserva esa clasificación junto con su salvedad. Los remanentes no indicados se representan con `null`, nunca con cero.
 
-Para otra semana, crea primero una copia histórica de la edición publicada y después actualiza `edition`, `maintenanceCut`, `sourceReport`, `fleetRecords` y `maintenance`. Conserva los cortes de los indicadores que no tengan una fuente nueva.
+Para otra semana, crea primero una copia histórica de la edición publicada y después actualiza `maintenanceCut`, `sourceReport`, `fleetRecords`, `maintenance` y `maintenanceNote`. Conserva `edition` para mantener la compatibilidad con los datos guardados. Conserva los cortes de los indicadores que no tengan una fuente nueva.
