@@ -109,7 +109,8 @@ Los archivos están formateados con sangría. Puedes abrirlos en un editor de te
 
 ## Ediciones semanales e historial
 
-- [Dashboard actual](https://davidfanvilla.github.io/dashboard-operativo-praat/): mantenimiento al 24/11/2026.
+- [Dashboard actual](https://davidfanvilla.github.io/dashboard-operativo-praat/): mantenimiento al 24/11/2026 e incidencias al 22/11/2026.
+- [Corte del 24/11/2026 previo a la actualización de incidencias](historial/2026-11-24/).
 - [Corte del 23/11/2026](historial/2026-11-23/).
 - [Corte del 20/11/2026](historial/2026-11-20/).
 - [Versión anterior, datos al 05/11/2026](historial/2026-11-05/).
