@@ -2,6 +2,8 @@
 
 [Ver dashboard](https://davidfanvilla.github.io/dashboard-operativo-praat/)
 
+[Cronograma de evaluación a los instructores de simulador](https://davidfanvilla.github.io/dashboard-operativo-praat/cronograma-simuladores/) · [instrucciones](cronograma-simuladores/README.md)
+
 ## Qué archivo editar
 
 | Quiero cambiar… | Archivo |

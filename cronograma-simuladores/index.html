@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cronograma de evaluación a los instructores de simulador · PRAAT</title>
+    <!-- Mismo estilo base que el Dashboard Operativo PRAAT. -->
+    <link rel="stylesheet" href="../style.css?v=cronograma-1" />
+    <link rel="stylesheet" href="estilo.css?v=1" />
+  </head>
+  <body>
+    <header aria-label="PRAAT Escuela de Vuelo">
+      <h1>Cronograma de evaluación a los instructores de simulador</h1>
+    </header>
+    <div class="dates" id="dates"></div>
+    <div class="history-nav">
+      <strong>PRAAT:</strong>
+      <a href="../">Dashboard Operativo</a>
+      <a href="./">Cronograma de simulador</a>
+    </div>
+    <section class="week-note">
+      <b>Regla de estandarización</b>
+      <p id="reglas"></p>
+    </section>
+    <main>
+      <section id="kpis" class="kpis"></section>
+
+      <div class="crono-row">
+        <section class="panel">
+          <h2>◷ Próximas evaluaciones</h2>
+          <div class="tablewrap"><table id="proximas"></table></div>
+          <p class="foot">
+            «Por programar» es una fecha sugerida por la regla a partir de la
+            última evaluación; pulsa «Programar» para confirmarla.
+          </p>
+        </section>
+        <section class="panel">
+          <h2>▦ Estado por instructor y simulador</h2>
+          <div class="tablewrap"><table id="estado"></table></div>
+          <p class="foot">✎ junto al nombre edita al instructor y sus simuladores.</p>
+        </section>
+      </div>
+
+      <section class="panel calendario">
+        <h2>
+          ▥ Calendario de evaluaciones
+          <span class="cal-nav">
+            <button type="button" id="cal-prev" aria-label="Meses anteriores">‹</button>
+            <button type="button" id="cal-hoy">Hoy</button>
+            <button type="button" id="cal-next" aria-label="Meses siguientes">›</button>
+          </span>
+        </h2>
+        <div class="tablewrap"><table id="calendario"></table></div>
+        <p class="foot leyenda">
+          <span class="mk ok">✓</span> Aprobatoria
+          <span class="mk bad">✗</span> No aprobatoria
+          <span class="mk done">✓</span> Realizada sin resultado registrado
+          <span class="mk prog">●</span> Programada
+          <span class="mk late">●</span> Vencida
+          <span class="mk sug">◌</span> Sugerida por la regla
+        </p>
+      </section>
+
+      <section class="panel historial">
+        <h2>✓ Historial y registro de evaluaciones</h2>
+        <div class="filtros">
+          <label>Instructor <select id="f-instructor"></select></label>
+          <label>Simulador <select id="f-simulador"></select></label>
+          <label>Estado <select id="f-estado"></select></label>
+          <button type="button" class="primary" id="nueva-2">＋ Registrar evaluación</button>
+        </div>
+        <div class="tablewrap"><table id="historial"></table></div>
+      </section>
+
+      <p class="source">
+        Fuente: indicaciones de Coordinación PRAAT.
+        <span id="saved"></span>
+      </p>
+      <p id="warning" class="warning"></p>
+    </main>
+    <nav>
+      <div>
+        <button id="nueva">＋ Registrar evaluación</button
+        ><button id="nuevo-instructor">＋ Instructor</button
+        ><button id="export">Exportar JSON</button
+        ><label class="button"
+          >Importar JSON<input id="import" type="file" accept="application/json" hidden /></label
+        ><button id="descargar-datos">Descargar datos.js</button
+        ><button id="reset">Cargar datos publicados</button
+        ><button onclick="window.print()">Imprimir / PDF</button
+        ><button id="full">Pantalla completa</button>
+      </div>
+    </nav>
+
+    <dialog id="dlg-evaluacion">
+      <form id="form-evaluacion">
+        <div class="dialoghead">
+          <div>
+            <h2 id="ev-titulo">Registrar evaluación</h2>
+            <p>Si solo conoces el mes, deja el día vacío.</p>
+          </div>
+          <button type="button" class="cerrar" aria-label="Cerrar">✕</button>
+        </div>
+        <fieldset>
+          <legend>Evaluación</legend>
+          <label class="field">Instructor<select name="instructor" required></select></label>
+          <label class="field">Simulador<select name="simulador" required></select></label>
+          <label class="field">Estado<select name="estado" required></select></label>
+          <label class="field">Mes<input name="mes" type="month" required /></label>
+          <label class="field">Día (opcional)<input name="dia" type="number" min="1" max="31" /></label>
+          <label class="field">Resultado<select name="resultado" required></select></label>
+          <label class="field">Meses hasta la siguiente<input name="siguienteMeses" type="number" min="1" max="36" /></label>
+          <label class="field">Evaluador (opcional)<input name="evaluador" type="text" /></label>
+          <label class="field full">Notas<textarea name="notas" rows="2"></textarea></label>
+          <label class="check full" id="auto-wrap"
+            ><input type="checkbox" name="auto" checked />
+            <span id="auto-texto">Programar automáticamente la siguiente evaluación</span></label
+          >
+        </fieldset>
+        <p class="note">Los cambios se guardan en este navegador. Usa «Descargar datos.js» y súbelo a GitHub para que todos vean la misma información.</p>
+        <div class="actions">
+          <button type="button" id="ev-borrar" class="danger">Eliminar</button
+          ><button type="button" class="cerrar">Cancelar</button
+          ><button class="primary" type="submit">Guardar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="dlg-instructor">
+      <form id="form-instructor">
+        <div class="dialoghead">
+          <div>
+            <h2 id="in-titulo">Instructor</h2>
+            <p>Marca los simuladores en los que se evalúa.</p>
+          </div>
+          <button type="button" class="cerrar" aria-label="Cerrar">✕</button>
+        </div>
+        <fieldset>
+          <legend>Datos</legend>
+          <label class="field full">Nombre<input name="nombre" type="text" required placeholder="Cap. Nombre Apellido" /></label>
+          <div class="full sims" id="in-sims"></div>
+          <label class="field full">Otro simulador (separa con comas)<input name="otros" type="text" placeholder="Ej. ATR 72" /></label>
+        </fieldset>
+        <div class="actions">
+          <button type="button" id="in-borrar" class="danger">Eliminar instructor</button
+          ><button type="button" class="cerrar">Cancelar</button
+          ><button class="primary" type="submit">Guardar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" role="status"></div>
+    <script src="datos.js?v=20261124"></script>
+    <script src="app.js?v=1"></script>
+  </body>
+</html>
