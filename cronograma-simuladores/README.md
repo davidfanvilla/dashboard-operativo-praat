@@ -37,3 +37,17 @@ Usa el mismo estilo y encabezado que el [Dashboard Operativo](../) (`../style.cs
 - `siguienteMeses`: número de meses hasta la siguiente; `null` usa la regla.
 - `instructor` usa el `id` del instructor (por ejemplo `"sergio-damian"`).
 - Conserva comillas, comas, llaves y corchetes.
+
+## Formatos de evaluación
+
+En [formatos/](formatos/) están los dos formatos para llenar en línea o imprimir:
+
+- **Lista de verificación de desempeño · Instructor de simulador** (`supervision-instructor.html`).
+- **Evaluación de vuelo · Alumno** (`evaluacion-alumno.html`).
+
+Los archivos Word originales están sin cambios en `formatos/originales/`. Las versiones web copian su contenido tal cual; si cambias un Word, actualiza también el texto en el bloque `FORMATO` del HTML correspondiente.
+
+- Lo capturado se guarda como borrador en el navegador. **Nuevo formato** lo borra.
+- **Imprimir / PDF** imprime en tamaño carta, en 2 páginas, como el original. **Imprimir en blanco** abre el formato vacío.
+- Las firmas se pueden dibujar con el mouse, el dedo o un lápiz.
+- En el formato del instructor, **Registrar en el cronograma** guarda la supervisión: «6 m» cuenta como aprobatoria y «3 m» como no aprobatoria, y programa la siguiente. Si había una evaluación programada para ese simulador (o «Por confirmar»), se marca como realizada.

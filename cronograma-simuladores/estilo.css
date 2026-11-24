@@ -314,3 +314,44 @@ label.check[hidden] {
     padding-bottom: 2px;
   }
 }
+
+/* Formatos de evaluación. */
+.formatos {
+  margin-top: 15px;
+}
+.formatos-lista {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+.formatos-lista article {
+  border: 1px solid #c9d9e6;
+  border-radius: 8px;
+  background: #f2f7fc;
+  padding: 14px 16px;
+}
+.formatos-lista h3 {
+  color: #123465;
+  font-size: 16px;
+}
+.formatos-lista p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #3b4a60;
+  margin: 0 0 12px;
+}
+.formatos-lista .button {
+  margin: 0 4px 6px 0;
+  text-decoration: none;
+}
+@media (max-width: 650px) {
+  .formatos-lista {
+    grid-template-columns: 1fr;
+  }
+}
+@media print {
+  .formatos {
+    display: none;
+  }
+}

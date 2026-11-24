@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lista de verificación de desempeño · Instructor de simulador · PRAAT</title>
+    <link rel="stylesheet" href="formato.css?v=1" />
+  </head>
+  <body>
+    <div class="barra">
+      <a href="../">← Cronograma</a>
+      <a href="./">Formatos</a>
+      <span class="grow"></span>
+      <span class="guardado" id="guardado"></span>
+      <button type="button" id="nuevo">Nuevo formato</button>
+      <button type="button" id="blanco">Imprimir en blanco</button>
+      <a class="boton" href="originales/Formato_Supervision_Instructor_Simulador.docx" download>Descargar original (Word)</a>
+      <button type="button" class="primary" id="imprimir">Imprimir / PDF</button>
+    </div>
+    <main id="formato"></main>
+    <section class="registro" id="registro">
+      <h2>Registrar esta supervisión en el cronograma</h2>
+      Simulador:<select id="reg-sim" aria-label="Simulador"></select>
+      <button type="button" class="primary" id="reg-btn">Registrar en el cronograma</button>
+      <p id="reg-info"></p>
+    </section>
+    <div id="toast" role="status"></div>
+    <script>
+      // Contenido copiado del archivo Formato_Supervision_Instructor_Simulador.docx.
+      const FORMATO = {
+        id: "supervision-instructor",
+        titulos: ["EVALUACIÓN DE VUELO - FASE INICIAL", "(MONOMOTOR / BIMOTOR BÁSICO)"],
+        subtitulos: [
+          { texto: "LISTA DE VERIFICACIÓN DE DESEMPEÑO", color: "navy", tam: "9.5pt" },
+          { texto: "INSTRUCTOR DE SIMULADOR", color: "maroon", tam: "10.5pt" },
+        ],
+        control: [
+          [{ label: "Nombre del instructor:", name: "instructor", lista: "instructores" }, { label: "Instructor verificador/supervisor:", name: "supervisor" }],
+          [{ label: "Fecha:", name: "fecha", tipo: "fecha" }, { label: "Matrícula:", name: "matricula" }],
+          [{ label: "Sesion #", name: "sesion" }, { label: "Proxima supervision:", name: "proxima", tipo: "opciones", opciones: ["3 m", "6 m"] }],
+        ],
+        leyenda: "S: Suficiente / satisfactorio     E: Requiere entrenamiento",
+        paginas: [
+          {
+            secciones: [
+              { titulo: "PREVIO A LA SESIÓN", items: ["Se presentó a tiempo.", "Debidamente uniformado.", "Verificó que el simulador funcionara correctamente.", "Definió los objetivos de la sesión.", "Explicó las tolerancias.", "Resolvió dudas de sesiones anteriores."] },
+              { titulo: "DURANTE LA SESIÓN", items: ["", "Corrige oportunamente desviaciones de velocidad, altitud y rumbo.", "Promueve y exige la lectura y verificación de las listas.", "Promueve el apego a procedimientos y técnicas de vuelo, y call outs.", "Utiliza lenguaje técnico aeronáutico.", "Explica claramente las maniobras y los procedimientos a realizar.", "Hace uso adecuado de la pausa del simulador.", "Administra las cargas de trabajo del alumno.", "Promueve volar, navegar, comunicar y administrar.", "Se apega a la guía (syllabus) programada al final de la sesión."] },
+            ],
+          },
+          {
+            encabezado: "LISTA DE VERIFICACIÓN DE DESEMPEÑO | INSTRUCTOR DE SIMULADOR",
+            cabecera: false,
+            secciones: [
+              { titulo: "HABILIDADES CRM EN LA INSTRUCCIÓN", items: ["Identificación de problemas.", "Comunicación con alumnos.", "Manejo de recursos.", "Ambiente de apoyo (confianza y trato).", "Utiliza el modelo TEM."] },
+              { titulo: "FIN DE LA SESIÓN", items: ["Brinda retroalimentación puntual y objetiva.", "Estimula y promueve que los alumnos externen comentarios y dudas.", "El resultado final corresponde a lo observado.", "Documenta de forma detallada y clara el progreso del alumno.", "Completa correctamente todos los formatos: bitácora y expedientes.", "Su trato con el alumno fue profesional.", "Manejo del tiempo."] },
+            ],
+          },
+        ],
+        firmas: { titulo: "FIRMA DE", nombres: ["Instructor verificador/supervisor", "Instructor"] },
+        // Registro en el cronograma: 6 m = aprobatoria, 3 m = no aprobatoria.
+        cronograma: { instructor: "instructor", supervisor: "supervisor", fecha: "fecha", sesion: "sesion", matricula: "matricula", proxima: "proxima", meses: { "3 m": 3, "6 m": 6 } },
+      };
+    </script>
+    <script src="../datos.js?v=20261124"></script>
+    <script src="formato.js?v=1"></script>
+  </body>
+</html>

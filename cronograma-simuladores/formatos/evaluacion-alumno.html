@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Evaluación de vuelo · Alumno · PRAAT</title>
+    <link rel="stylesheet" href="formato.css?v=1" />
+  </head>
+  <body>
+    <div class="barra">
+      <a href="../">← Cronograma</a>
+      <a href="./">Formatos</a>
+      <span class="grow"></span>
+      <span class="guardado" id="guardado"></span>
+      <button type="button" id="nuevo">Nuevo formato</button>
+      <button type="button" id="blanco">Imprimir en blanco</button>
+      <a class="boton" href="originales/Formato_Evaluacion_de_Vuelo_Alumno.docx" download>Descargar original (Word)</a>
+      <button type="button" class="primary" id="imprimir">Imprimir / PDF</button>
+    </div>
+    <main id="formato"></main>
+
+    <div id="toast" role="status"></div>
+    <script>
+      // Contenido copiado del archivo Formato_Evaluacion_de_Vuelo_Alumno.docx.
+      const FORMATO = {
+        id: "evaluacion-alumno",
+        titulos: ["EVALUACIÓN DE VUELO - FASE INICIAL", "(MONOMOTOR / BIMOTOR BÁSICO)"],
+        subtitulos: [{ texto: "ALUMNO", color: "maroon", tam: "10.5pt" }],
+        control: [
+          [{ label: "Alumno:", name: "alumno" }, { label: "Instructor:", name: "instructor", lista: "instructores" }],
+          [{ label: "Fecha:", name: "fecha", tipo: "fecha" }, { label: "Tipo de Simulador :", name: "simulador", lista: "simuladores" }],
+          [{ label: "Sesion:", name: "sesion", valor: "13 / 23" }, { label: "Tipo de vuelo :", name: "vuelo", tipo: "opciones", opciones: ["VFR", "IFR"] }],
+        ],
+        paginas: [
+          {
+            secciones: [
+              { titulo: "PREVIO A LA SESIÓN", items: ["Se presentó a tiempo.", "Se presentó debidamente uniformado.", "Se presentó con la papelería necesaria.", "Preguntó o aclaró dudas de sesiones anteriores."] },
+              { titulo: "DURANTE LA SESIÓN", items: ["Mantiene velocidad.", "Mantiene altitud.", "Mantiene rumbo.", "Sus virajes son coordinados.", "Efectúa los call outs adecuadamente.", "Se apega a la técnica de vuelo.", "Utiliza correctamente el lenguaje técnico aeronáutico.", "Lee y comprueba las listas.", "Realiza el análisis de ATIS.", "Efectúa correctamente los briefings.", "Interpreta correctamente las cartas.", "Sus comunicaciones son claras y en orden.", "Entiende, interpreta y cumple las instrucciones.", "Monitorea activamente sus instrumentos."] },
+            ],
+          },
+          {
+            encabezado: "EVALUACIÓN DE VUELO - FASE INICIAL | ALUMNO",
+            cabecera: true,
+            secciones: [
+              { titulo: "DURANTE LA SESIÓN (CONTINUACIÓN)", items: ["Mantiene en todo momento la conciencia situacional.", "Administra adecuadamente sus cargas de trabajo.", "Prioriza tareas.", "Toma decisiones.", "Mantiene la premisa de volar, navegar, comunicar y administrar."] },
+            ],
+          },
+        ],
+        firmas: { titulo: "FIRMAS DE", nombres: ["Instructor", "Alumno"] },
+      };
+    </script>
+    <script src="../datos.js?v=20261124"></script>
+    <script src="formato.js?v=1"></script>
+  </body>
+</html>
