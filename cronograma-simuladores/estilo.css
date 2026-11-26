@@ -406,10 +406,16 @@ dialog #toast {
   white-space: nowrap;
 }
 
-/* Orden: resúmenes → calendario → próximas evaluaciones. */
-.kpis + .calendario {
+/* Orden: calendario → resúmenes → próximas evaluaciones. */
+main > .calendario:first-child {
   margin-top: 0;
+}
+.calendario + .kpis {
+  margin-top: 15px;
 }
 .proximas {
   margin-top: 15px;
+}
+.kpis + .proximas {
+  margin-top: 0;
 }
