@@ -405,3 +405,11 @@ dialog #toast {
   font-size: 13px;
   white-space: nowrap;
 }
+
+/* Orden: resúmenes → calendario → próximas evaluaciones. */
+.kpis + .calendario {
+  margin-top: 0;
+}
+.proximas {
+  margin-top: 15px;
+}
