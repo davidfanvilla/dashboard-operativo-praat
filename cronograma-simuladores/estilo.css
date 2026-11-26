@@ -355,3 +355,26 @@ label.check[hidden] {
     display: none;
   }
 }
+
+/* Panel de instructores. */
+.chip {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 1px 0;
+  border-radius: 999px;
+  background: #e4f1fb;
+  color: #123465;
+  font-size: 12px;
+  font-weight: bold;
+}
+#instructores td:nth-child(2) {
+  text-align: left;
+}
+button.mini.danger {
+  margin-right: 0;
+  background: white;
+}
+/* El aviso también se ve cuando hay una ventana abierta. */
+dialog #toast {
+  position: fixed;
+}

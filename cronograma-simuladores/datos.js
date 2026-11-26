@@ -7,7 +7,7 @@
 // siguienteMeses: meses hasta la siguiente evaluación (vacío = según regla).
 const DATOS_INICIALES = {
   "version": 1,
-  "actualizado": "2026-11-24",
+  "actualizado": "2026-11-26",
   "reglas": {
     "aprobatoria": 6,
     "noAprobatoria": 3,
@@ -17,7 +17,7 @@ const DATOS_INICIALES = {
   "instructores": [
     { "id": "sergio-damian", "nombre": "Cap. Sergio Damián", "simuladores": ["Cirrus"] },
     { "id": "bernardo", "nombre": "Cap. Bernardo", "simuladores": ["Por confirmar"] },
-    { "id": "marco-gusman", "nombre": "Cap. Marco Gusmán", "simuladores": ["Red Bird"] },
+    { "id": "marco-gusman", "nombre": "Cap. Marco Gusmán", "simuladores": ["Red Bird", "Cirrus"] },
     { "id": "corona", "nombre": "Cap. Corona", "simuladores": ["B737", "B787", "Red Bird"] },
     { "id": "gustavo-angeles", "nombre": "Cap. Gustavo Angeles", "simuladores": ["Cirrus", "A-320"] },
     { "id": "ivan-orozco", "nombre": "Cap. Iván Orozco", "simuladores": ["Cirrus", "A-320"] }

@@ -16,9 +16,11 @@ Usa el mismo estilo y encabezado que el [Dashboard Operativo](../) (`../style.cs
 
 ## Uso diario
 
-- **＋ Registrar evaluación**: agrega una evaluación realizada (historial) o programada (fecha futura). Si solo conoces el mes, deja el día vacío.
+- **＋ Evaluación realizada**: registra una prueba que ya se hizo (también fechas pasadas) con su resultado y, si quieres, la calificación. Si solo conoces el mes, deja el día vacío.
+- **＋ Programar evaluación**: agrega una fecha futura.
+- **Instructores y simuladores**: «Editar» cambia el nombre y los simuladores; «Eliminar» borra al instructor junto con su historial (pide confirmación).
 - **Registrar resultado**: convierte una evaluación programada en realizada. Con resultado aprobatorio se programa la siguiente a 6 meses; con no aprobatorio, a 3 meses. Puedes cambiar el intervalo en «Meses hasta la siguiente».
-- **＋ Instructor** y el botón ✎ junto al nombre: agrega instructores o cambia sus simuladores.
+- **＋ Instructor**: agrega instructores.
 - **Calendario**: ‹ › recorre los meses; **Hoy** regresa al mes actual.
 
 ## Dónde se guarda la información

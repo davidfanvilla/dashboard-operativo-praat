@@ -6,7 +6,7 @@
     <title>Cronograma de evaluación a los instructores de simulador · PRAAT</title>
     <!-- Mismo estilo base que el Dashboard Operativo PRAAT. -->
     <link rel="stylesheet" href="../style.css?v=cronograma-1" />
-    <link rel="stylesheet" href="estilo.css?v=2" />
+    <link rel="stylesheet" href="estilo.css?v=3" />
   </head>
   <body>
     <header aria-label="PRAAT Escuela de Vuelo">
@@ -63,12 +63,18 @@
       </section>
 
       <section class="panel historial">
+        <h2>♙ Instructores y simuladores</h2>
+        <div class="tablewrap"><table id="instructores"></table></div>
+        <p class="foot">«Editar» cambia el nombre y los simuladores; «Eliminar» borra al instructor y su historial (pide confirmación).</p>
+      </section>
+
+      <section class="panel historial">
         <h2>✓ Historial y registro de evaluaciones</h2>
         <div class="filtros">
           <label>Instructor <select id="f-instructor"></select></label>
           <label>Simulador <select id="f-simulador"></select></label>
           <label>Estado <select id="f-estado"></select></label>
-          <button type="button" class="primary" id="nueva-2">＋ Registrar evaluación</button>
+          <button type="button" class="primary" id="nueva-2">＋ Evaluación realizada</button>
         </div>
         <div class="tablewrap"><table id="historial"></table></div>
       </section>
@@ -101,7 +107,8 @@
     </main>
     <nav>
       <div>
-        <button id="nueva">＋ Registrar evaluación</button
+        <button id="nueva">＋ Programar evaluación</button
+        ><button id="nueva-realizada" class="primary">＋ Evaluación realizada</button
         ><button id="nuevo-instructor">＋ Instructor</button
         ><button id="export">Exportar JSON</button
         ><label class="button"
@@ -131,6 +138,7 @@
           <label class="field">Día (opcional)<input name="dia" type="number" min="1" max="31" /></label>
           <label class="field">Resultado<select name="resultado" required></select></label>
           <label class="field">Meses hasta la siguiente<input name="siguienteMeses" type="number" min="1" max="36" /></label>
+          <label class="field">Calificación (opcional)<input name="calificacion" type="number" step="any" min="0" placeholder="Ej. 92" /></label>
           <label class="field">Evaluador (opcional)<input name="evaluador" type="text" /></label>
           <label class="field full">Notas<textarea name="notas" rows="2"></textarea></label>
           <label class="check full" id="auto-wrap"
@@ -172,6 +180,6 @@
 
     <div id="toast" role="status"></div>
     <script src="datos.js?v=20261124"></script>
-    <script src="app.js?v=1"></script>
+    <script src="app.js?v=2"></script>
   </body>
 </html>

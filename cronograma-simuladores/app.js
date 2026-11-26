@@ -40,6 +40,7 @@ function validar(d) {
     if (!ESTADOS.includes(e.estado)) throw Error("Estado inválido: " + e.estado);
     if (!RESULTADOS.includes(e.resultado)) throw Error("Resultado inválido: " + e.resultado);
     if (typeof e.simulador !== "string" || !e.simulador) throw Error("Falta el simulador.");
+    if (e.calificacion != null && !Number.isFinite(e.calificacion)) throw Error("Calificación inválida.");
   });
 }
 
@@ -165,6 +166,7 @@ function render() {
   renderEstado(asig);
   renderCalendario(asig);
   renderHistorial();
+  renderInstructores();
 
   $("saved").textContent = savedAt
     ? "Último guardado en este navegador: " + new Date(savedAt).toLocaleString("es-MX") + "."
@@ -219,7 +221,7 @@ function renderEstado(asig) {
         k === 0
           ? `<td rowspan="${filas.length}">${esc(ins.nombre)} <button class="mini edit-ins" data-instructor="${esc(ins.id)}" aria-label="Editar instructor">✎</button></td>`
           : ""
-      }<td>${esc(a.sim)}</td><td>${ult ? fmtFecha(ult.fecha) + (ult !== a.ultima ? `<br><small>(${esc(ult.simulador)})</small>` : "") : "—"}</td><td>${ult ? resPill(ult.resultado) : "—"}</td><td>${a.proxima ? `<b>${fmtFecha(a.proxima)}</b>${a.sugerida ? "<br><small>sugerida</small>" : ""}` : "—"}</td><td>${pill(a.estado)}</td></tr>`;
+      }<td>${esc(a.sim)}</td><td>${ult ? fmtFecha(ult.fecha) + (ult !== a.ultima ? `<br><small>(${esc(ult.simulador)})</small>` : "") : "—"}</td><td>${ult ? resPill(ult.resultado) + (ult.calificacion != null ? `<br><small>Calif. ${ult.calificacion}</small>` : "") : "—"}</td><td>${a.proxima ? `<b>${fmtFecha(a.proxima)}</b>${a.sugerida ? "<br><small>sugerida</small>" : ""}` : "—"}</td><td>${pill(a.estado)}</td></tr>`;
     });
   });
   $("estado").innerHTML = html + "</tbody>";
@@ -292,15 +294,29 @@ function renderHistorial() {
     .sort(porFecha)
     .reverse();
   $("historial").innerHTML =
-    `<thead><tr><th>Instructor</th><th>Fecha</th><th>Simulador</th><th>Estado</th><th>Resultado</th><th>Siguiente</th><th>Evaluador</th><th>Notas</th><th class="acc">Acción</th></tr></thead><tbody>` +
+    `<thead><tr><th>Instructor</th><th>Fecha</th><th>Simulador</th><th>Estado</th><th>Resultado</th><th>Calificación</th><th>Siguiente</th><th>Evaluador</th><th>Notas</th><th class="acc">Acción</th></tr></thead><tbody>` +
     (lista.length
       ? lista
           .map((e) => {
             const m = e.estado === "Realizada" ? mesesSiguiente(e) : null;
-            return `<tr class="${e.estado === "Cancelada" ? "cancelada" : ""}"><td>${esc(nombre(e.instructor))}</td><td><b>${fmtFecha(e.fecha)}</b></td><td>${esc(e.simulador)}</td><td>${pill(e.estado === "Programada" ? estadoFecha(e.fecha) : e.estado)}</td><td>${resPill(e.resultado)}</td><td>${m ? `${m} meses<br><small>${fmtFecha(sumarMeses(e.fecha, m))}</small>` : "—"}</td><td>${esc(e.evaluador) || "—"}</td><td class="txt">${esc(e.notas)}</td><td class="acc"><button class="mini" data-editar="${esc(e.id)}" aria-label="Editar">✎</button></td></tr>`;
+            return `<tr class="${e.estado === "Cancelada" ? "cancelada" : ""}"><td>${esc(nombre(e.instructor))}</td><td><b>${fmtFecha(e.fecha)}</b></td><td>${esc(e.simulador)}</td><td>${pill(e.estado === "Programada" ? estadoFecha(e.fecha) : e.estado)}</td><td>${resPill(e.resultado)}</td><td>${e.calificacion != null ? `<b>${e.calificacion}</b>` : "—"}</td><td>${m ? `${m} meses<br><small>${fmtFecha(sumarMeses(e.fecha, m))}</small>` : "—"}</td><td>${esc(e.evaluador) || "—"}</td><td class="txt">${esc(e.notas)}</td><td class="acc"><button class="mini" data-editar="${esc(e.id)}" aria-label="Editar">✎</button></td></tr>`;
           })
           .join("")
-      : `<tr><td colspan="9">No hay evaluaciones con esos filtros.</td></tr>`) +
+      : `<tr><td colspan="10">No hay evaluaciones con esos filtros.</td></tr>`) +
+    "</tbody>";
+}
+
+function renderInstructores() {
+  $("instructores").innerHTML =
+    `<thead><tr><th>Instructor</th><th>Simuladores</th><th>Evaluaciones</th><th class="acc">Acción</th></tr></thead><tbody>` +
+    data.instructores
+      .map((i) => {
+        const evs = data.evaluaciones.filter((e) => e.instructor === i.id);
+        const r = evs.filter((e) => e.estado === "Realizada").length,
+          p = evs.filter((e) => e.estado === "Programada").length;
+        return `<tr><td>${esc(i.nombre)}</td><td>${i.simuladores.map((s) => `<span class="chip">${esc(s)}</span>`).join(" ")}</td><td>${r} realizadas · ${p} programadas</td><td class="acc"><button class="mini primary" data-realizada-ins="${esc(i.id)}">＋ Evaluación realizada</button> <button class="mini" data-instructor="${esc(i.id)}">Editar</button> <button class="mini danger" data-borrar-ins="${esc(i.id)}">Eliminar</button></td></tr>`;
+      })
+      .join("") +
     "</tbody>";
 }
 
@@ -322,7 +338,8 @@ function abrirEvaluacion(ev, preset = {}) {
   fEv.instructor.innerHTML = opciones(data.instructores.map((i) => [i.id, i.nombre]), e.instructor);
   fEv.simulador.innerHTML = opciones(simuladoresPara(e.instructor, e.simulador), e.simulador || instructor(e.instructor)?.simuladores[0]);
   fEv.estado.innerHTML = opciones(ESTADOS, e.estado);
-  fEv.resultado.innerHTML = opciones(RESULTADOS, e.resultado);
+  opcionesResultado(e.estado, e.resultado);
+  fEv.calificacion.value = e.calificacion ?? "";
   const p = partes(e.fecha);
   fEv.mes.value = `${p.y}-${pad(p.m)}`;
   fEv.dia.value = p.d || "";
@@ -348,8 +365,15 @@ function actualizarAyuda() {
 fEv.instructor.onchange = () => {
   fEv.simulador.innerHTML = opciones(simuladoresPara(fEv.instructor.value), instructor(fEv.instructor.value)?.simuladores[0]);
 };
+// En una evaluación realizada el resultado es obligatorio y no puede quedar «Pendiente».
+function opcionesResultado(estadoEv, sel) {
+  if (estadoEv === "Realizada")
+    fEv.resultado.innerHTML =
+      `<option value="">Elige el resultado…</option>` + opciones(RESULTADOS.filter((r) => r !== "Pendiente"), sel === "Pendiente" ? "" : sel);
+  else fEv.resultado.innerHTML = opciones(RESULTADOS, estadoEv === "Programada" ? "Pendiente" : sel);
+}
 fEv.estado.onchange = () => {
-  if (fEv.estado.value === "Programada") fEv.resultado.value = "Pendiente";
+  opcionesResultado(fEv.estado.value, fEv.resultado.value);
   actualizarAyuda();
 };
 for (const n of ["resultado", "siguienteMeses", "mes", "dia"]) fEv[n].addEventListener("input", actualizarAyuda);
@@ -368,6 +392,7 @@ fEv.onsubmit = (ev) => {
     resultado: fEv.resultado.value,
     siguienteMeses: fEv.siguienteMeses.value ? Number(fEv.siguienteMeses.value) : null,
     evaluador: fEv.evaluador.value.trim(),
+    calificacion: fEv.calificacion.value !== "" ? Number(fEv.calificacion.value) : null,
     notas: fEv.notas.value.trim(),
   };
   if (e.estado === "Realizada" && e.resultado === "Pendiente")
@@ -394,6 +419,7 @@ fEv.onsubmit = (ev) => {
         resultado: "Pendiente",
         siguienteMeses: null,
         evaluador: "",
+        calificacion: null,
         notas: `Generada automáticamente: ${meses} meses después de la evaluación de ${fmtFecha(e.fecha)} (${e.resultado.toLowerCase()}).`,
       });
       msg += `. Siguiente programada: ${fmtFecha(sig)}`;
@@ -439,6 +465,12 @@ fIn.onsubmit = (ev) => {
   const nombreNuevo = fIn.nombre.value.trim();
   if (editandoIns) {
     const ins = d.instructores.find((i) => i.id === editandoIns);
+    // Si «Por confirmar» se cambia por un simulador real, sus evaluaciones programadas pasan a ese simulador.
+    const nuevoSim = sims.find((s) => !ins.simuladores.includes(s) && s !== "Por confirmar");
+    if (ins.simuladores.includes("Por confirmar") && !sims.includes("Por confirmar") && nuevoSim)
+      d.evaluaciones.forEach((e) => {
+        if (e.instructor === ins.id && e.simulador === "Por confirmar" && e.estado === "Programada") e.simulador = nuevoSim;
+      });
     ins.nombre = nombreNuevo;
     ins.simuladores = sims;
   } else {
@@ -456,16 +488,26 @@ fIn.onsubmit = (ev) => {
 $("in-borrar").onclick = () => {
   if (!editandoIns) return;
   const n = data.evaluaciones.filter((e) => e.instructor === editandoIns).length;
-  if (n) return toast(`Tiene ${n} evaluaciones registradas. Elimínalas primero para conservar el historial completo.`);
-  if (!confirm("¿Eliminar este instructor?")) return;
-  const d = clone(data);
-  d.instructores = d.instructores.filter((i) => i.id !== editandoIns);
-  guardar(d, "Instructor eliminado");
-  $("dlg-instructor").close();
+  eliminarInstructor(editandoIns) && $("dlg-instructor").close();
 };
+function eliminarInstructor(id) {
+  const ins = instructor(id),
+    n = data.evaluaciones.filter((e) => e.instructor === id).length;
+  const pregunta = n
+    ? `¿Eliminar a ${ins.nombre} y sus ${n} evaluaciones (historial y fechas programadas)? Exporta un JSON antes si quieres conservar una copia.`
+    : `¿Eliminar a ${ins.nombre}?`;
+  if (!confirm(pregunta)) return false;
+  const d = clone(data);
+  d.instructores = d.instructores.filter((i) => i.id !== id);
+  d.evaluaciones = d.evaluaciones.filter((e) => e.instructor !== id);
+  guardar(d, "Instructor eliminado");
+  return true;
+}
 
 /* ---------- Botones y eventos ---------- */
 function toast(t) {
+  // Dentro de la ventana abierta para que no quede oculto detrás de ella.
+  (document.querySelector("dialog[open]") || document.body).appendChild($("toast"));
   $("toast").textContent = t;
   $("toast").style.display = "block";
   clearTimeout(toast.t);
@@ -484,14 +526,18 @@ document.addEventListener("click", (ev) => {
   if (b.classList.contains("cerrar")) b.closest("dialog").close();
   if (b.dataset.editar) abrirEvaluacion(data.evaluaciones.find((e) => e.id === b.dataset.editar));
   if (b.dataset.resultado)
-    abrirEvaluacion(data.evaluaciones.find((e) => e.id === b.dataset.resultado), { estado: "Realizada", resultado: "Aprobatoria" });
+    abrirEvaluacion(data.evaluaciones.find((e) => e.id === b.dataset.resultado), { estado: "Realizada", resultado: "" });
   if (b.dataset.programar) {
     const [ins, sim, fecha] = b.dataset.programar.split("|");
     abrirEvaluacion(null, { instructor: ins, simulador: sim, fecha, notas: "Programada según la regla de estandarización." });
   }
   if (b.dataset.instructor) abrirInstructor(b.dataset.instructor);
+  if (b.dataset.borrarIns) eliminarInstructor(b.dataset.borrarIns);
+  if (b.dataset.realizadaIns) abrirEvaluacion(null, { estado: "Realizada", resultado: "", fecha: isoHoy(), instructor: b.dataset.realizadaIns });
 });
-$("nueva").onclick = $("nueva-2").onclick = () => abrirEvaluacion(null);
+const nuevaRealizada = () => abrirEvaluacion(null, { estado: "Realizada", resultado: "", fecha: isoHoy() });
+$("nueva").onclick = () => abrirEvaluacion(null);
+$("nueva-realizada").onclick = $("nueva-2").onclick = nuevaRealizada;
 $("nuevo-instructor").onclick = () => abrirInstructor(null);
 for (const id of ["f-instructor", "f-simulador", "f-estado"]) $(id).onchange = renderHistorial;
 $("cal-prev").onclick = () => ((calInicio -= 3), render());
