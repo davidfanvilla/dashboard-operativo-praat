@@ -378,3 +378,30 @@ button.mini.danger {
 dialog #toast {
   position: fixed;
 }
+
+/* Próximas evaluaciones a todo lo ancho y estado de cada simulador en el panel de instructores. */
+.proximas table,
+#instructores {
+  table-layout: auto;
+  font-size: 14px;
+}
+.proximas th,
+.proximas td,
+#instructores td {
+  overflow-wrap: normal;
+}
+.proximas th {
+  font-size: 12px;
+  white-space: nowrap;
+}
+#proximas td:nth-child(2) {
+  white-space: nowrap;
+}
+.chip[data-estado="Vencida"] { background: #fce8ed; color: #ae0f2e; }
+.chip[data-estado="Este mes"] { background: #fff4d6; color: #7a5200; }
+.chip[data-estado="Sin programar"],
+.chip[data-estado="Por programar"] { background: #eef1f4; color: #5c687a; }
+#instructores td:nth-child(3) {
+  font-size: 13px;
+  white-space: nowrap;
+}

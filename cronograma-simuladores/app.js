@@ -163,7 +163,6 @@ function render() {
   $("reglas").textContent = `Resultado aprobatorio: siguiente evaluación a ${data.reglas.aprobatoria} meses. Resultado no aprobatorio: siguiente evaluación a ${data.reglas.noAprobatoria} meses. Cada evaluación puede tener su propio intervalo en «Meses hasta la siguiente».`;
 
   renderProximas(asig);
-  renderEstado(asig);
   renderCalendario(asig);
   renderHistorial();
   renderInstructores();
@@ -207,24 +206,6 @@ function renderProximas(asig) {
           .join("")
       : `<tr><td colspan="6">Sin evaluaciones programadas.</td></tr>`) +
     "</tbody>";
-}
-
-function renderEstado(asig) {
-  let html = `<thead><tr><th>Instructor</th><th>Simulador</th><th>Última evaluación</th><th>Resultado</th><th>Próxima</th><th>Estado</th></tr></thead><tbody>`;
-  data.instructores.forEach((ins) => {
-    const filas = asig.filter((a) => a.ins.id === ins.id);
-    const otras = data.evaluaciones.filter((e) => e.instructor === ins.id && e.estado === "Realizada").sort(porFecha);
-    const ultimaGeneral = otras[otras.length - 1];
-    filas.forEach((a, k) => {
-      const ult = a.ultima || (ultimaGeneral && !ins.simuladores.includes(ultimaGeneral.simulador) ? ultimaGeneral : null);
-      html += `<tr>${
-        k === 0
-          ? `<td rowspan="${filas.length}">${esc(ins.nombre)} <button class="mini edit-ins" data-instructor="${esc(ins.id)}" aria-label="Editar instructor">✎</button></td>`
-          : ""
-      }<td>${esc(a.sim)}</td><td>${ult ? fmtFecha(ult.fecha) + (ult !== a.ultima ? `<br><small>(${esc(ult.simulador)})</small>` : "") : "—"}</td><td>${ult ? resPill(ult.resultado) + (ult.calificacion != null ? `<br><small>Calif. ${ult.calificacion}</small>` : "") : "—"}</td><td>${a.proxima ? `<b>${fmtFecha(a.proxima)}</b>${a.sugerida ? "<br><small>sugerida</small>" : ""}` : "—"}</td><td>${pill(a.estado)}</td></tr>`;
-    });
-  });
-  $("estado").innerHTML = html + "</tbody>";
 }
 
 function renderCalendario(asig) {
@@ -307,14 +288,23 @@ function renderHistorial() {
 }
 
 function renderInstructores() {
+  const asig = asignaciones();
   $("instructores").innerHTML =
-    `<thead><tr><th>Instructor</th><th>Simuladores</th><th>Evaluaciones</th><th class="acc">Acción</th></tr></thead><tbody>` +
+    `<thead><tr><th>Instructor</th><th>Simuladores · próxima evaluación</th><th>Última evaluación</th><th class="acc">Acción</th></tr></thead><tbody>` +
     data.instructores
       .map((i) => {
-        const evs = data.evaluaciones.filter((e) => e.instructor === i.id);
-        const r = evs.filter((e) => e.estado === "Realizada").length,
-          p = evs.filter((e) => e.estado === "Programada").length;
-        return `<tr><td>${esc(i.nombre)}</td><td>${i.simuladores.map((s) => `<span class="chip">${esc(s)}</span>`).join(" ")}</td><td>${r} realizadas · ${p} programadas</td><td class="acc"><button class="mini primary" data-realizada-ins="${esc(i.id)}">＋ Evaluación realizada</button> <button class="mini" data-instructor="${esc(i.id)}">Editar</button> <button class="mini danger" data-borrar-ins="${esc(i.id)}">Eliminar</button></td></tr>`;
+        const ult = data.evaluaciones.filter((e) => e.instructor === i.id && e.estado === "Realizada").sort(porFecha).pop();
+        const chips = asig
+          .filter((a) => a.ins.id === i.id)
+          .map(
+            (a) =>
+              `<span class="chip" data-estado="${esc(a.estado)}" title="${esc(a.estado)}">${esc(a.sim)} · ${a.proxima ? fmtFecha(a.proxima) + (a.sugerida ? " (sugerida)" : "") : "sin fecha"}</span>`,
+          )
+          .join(" ");
+        const ultTxt = ult
+          ? `${fmtFecha(ult.fecha)} · ${esc(ult.simulador)}<br>${resPill(ult.resultado)}${ult.calificacion != null ? ` <b>${ult.calificacion}</b>` : ""}`
+          : "—";
+        return `<tr><td>${esc(i.nombre)}</td><td>${chips}</td><td>${ultTxt}</td><td class="acc"><button class="mini primary" data-realizada-ins="${esc(i.id)}">＋ Evaluación realizada</button> <button class="mini" data-instructor="${esc(i.id)}">Editar</button> <button class="mini danger" data-borrar-ins="${esc(i.id)}">Eliminar</button></td></tr>`;
       })
       .join("") +
     "</tbody>";

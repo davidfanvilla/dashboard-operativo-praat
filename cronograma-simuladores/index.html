@@ -6,7 +6,7 @@
     <title>Cronograma de evaluación a los instructores de simulador · PRAAT</title>
     <!-- Mismo estilo base que el Dashboard Operativo PRAAT. -->
     <link rel="stylesheet" href="../style.css?v=cronograma-1" />
-    <link rel="stylesheet" href="estilo.css?v=3" />
+    <link rel="stylesheet" href="estilo.css?v=4" />
   </head>
   <body>
     <header aria-label="PRAAT Escuela de Vuelo">
@@ -26,21 +26,14 @@
     <main>
       <section id="kpis" class="kpis"></section>
 
-      <div class="crono-row">
-        <section class="panel">
+      <section class="panel proximas">
           <h2>◷ Próximas evaluaciones</h2>
           <div class="tablewrap"><table id="proximas"></table></div>
           <p class="foot">
             «Por programar» es una fecha sugerida por la regla a partir de la
             última evaluación; pulsa «Programar» para confirmarla.
           </p>
-        </section>
-        <section class="panel">
-          <h2>▦ Estado por instructor y simulador</h2>
-          <div class="tablewrap"><table id="estado"></table></div>
-          <p class="foot">✎ junto al nombre edita al instructor y sus simuladores.</p>
-        </section>
-      </div>
+      </section>
 
       <section class="panel calendario">
         <h2>
@@ -65,7 +58,7 @@
       <section class="panel historial">
         <h2>♙ Instructores y simuladores</h2>
         <div class="tablewrap"><table id="instructores"></table></div>
-        <p class="foot">«Editar» cambia el nombre y los simuladores; «Eliminar» borra al instructor y su historial (pide confirmación).</p>
+        <p class="foot">Cada simulador muestra su próxima evaluación (rojo: vencida; amarillo: este mes). «Editar» cambia el nombre y los simuladores; «Eliminar» borra al instructor y su historial (pide confirmación).</p>
       </section>
 
       <section class="panel historial">
@@ -180,6 +173,6 @@
 
     <div id="toast" role="status"></div>
     <script src="datos.js?v=20261124"></script>
-    <script src="app.js?v=2"></script>
+    <script src="app.js?v=3"></script>
   </body>
 </html>
