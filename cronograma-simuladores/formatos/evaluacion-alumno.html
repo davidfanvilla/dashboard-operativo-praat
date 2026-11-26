@@ -4,18 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Evaluación de vuelo · Alumno · PRAAT</title>
-    <link rel="stylesheet" href="formato.css?v=1" />
+    <link rel="stylesheet" href="formato.css?v=2" />
   </head>
   <body>
     <div class="barra">
       <a href="../">← Cronograma</a>
       <a href="./">Formatos</a>
+      <a href="./#guardadas">Evaluaciones guardadas</a>
       <span class="grow"></span>
       <span class="guardado" id="guardado"></span>
       <button type="button" id="nuevo">Nuevo formato</button>
       <button type="button" id="blanco">Imprimir en blanco</button>
       <a class="boton" href="originales/Formato_Evaluacion_de_Vuelo_Alumno.docx" download>Descargar original (Word)</a>
-      <button type="button" class="primary" id="imprimir">Imprimir / PDF</button>
+      <button type="button" id="imprimir">Imprimir / PDF</button>
+      <button type="button" class="primary" id="guardar">Guardar evaluación</button>
     </div>
     <main id="formato"></main>
 
@@ -24,6 +26,9 @@
       // Contenido copiado del archivo Formato_Evaluacion_de_Vuelo_Alumno.docx.
       const FORMATO = {
         id: "evaluacion-alumno",
+        nombre: "Evaluación de vuelo alumno",
+        // Datos que se muestran en «Evaluaciones guardadas» y en Google Sheets.
+        resumen: { evaluado: "alumno", evaluadoTexto: "el nombre del alumno", evaluador: "instructor", fecha: "fecha", detalle: "simulador" },
         titulos: ["EVALUACIÓN DE VUELO - FASE INICIAL", "(MONOMOTOR / BIMOTOR BÁSICO)"],
         subtitulos: [{ texto: "ALUMNO", color: "maroon", tam: "10.5pt" }],
         control: [
@@ -50,6 +55,8 @@
       };
     </script>
     <script src="../datos.js?v=20261124"></script>
-    <script src="formato.js?v=1"></script>
+    <script src="config.js?v=1"></script>
+    <script src="almacen.js?v=1"></script>
+    <script src="formato.js?v=3"></script>
   </body>
 </html>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Formatos de evaluación · PRAAT</title>
     <link rel="stylesheet" href="../../style.css?v=cronograma-1" />
-    <link rel="stylesheet" href="../estilo.css?v=2" />
+    <link rel="stylesheet" href="../estilo.css?v=7" />
   </head>
   <body>
     <header aria-label="PRAAT Escuela de Vuelo"><h1>Formatos de evaluación</h1></header>
@@ -35,6 +35,34 @@
           </article>
         </div>
       </section>
+
+      <section class="panel guardadas" id="guardadas">
+        <h2>🗂 Evaluaciones guardadas <span class="g-total" id="g-total"></span></h2>
+        <div class="filtros">
+          <label>Formato
+            <select id="g-formato">
+              <option value="">Todos</option>
+              <option value="supervision-instructor">Supervisión instructor de simulador</option>
+              <option value="evaluacion-alumno">Evaluación de vuelo alumno</option>
+            </select>
+          </label>
+          <label>Buscar <input id="g-buscar" type="search" placeholder="Nombre, evaluador, simulador…" /></label>
+          <span class="grow"></span>
+          <button type="button" id="g-actualizar">Actualizar</button>
+          <button type="button" id="g-exportar">Exportar respaldo</button>
+          <label class="button">Importar respaldo<input id="g-importar" type="file" accept="application/json" hidden /></label>
+        </div>
+        <p class="foot" id="g-estado"></p>
+        <div class="tablewrap"><table id="guardadas-tabla"></table></div>
+        <p class="foot">
+          «Abrir» carga la evaluación en el formato para revisarla o corregirla (vuelve a pulsar «Guardar evaluación» para guardar los cambios).
+          <a href="apps-script/LEEME.md">Cómo conectar Google Sheets</a>.
+        </p>
+      </section>
     </main>
+    <div id="toast" role="status"></div>
+    <script src="config.js?v=1"></script>
+    <script src="almacen.js?v=1"></script>
+    <script src="guardadas.js?v=1"></script>
   </body>
 </html>

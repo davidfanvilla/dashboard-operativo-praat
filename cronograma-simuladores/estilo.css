@@ -419,3 +419,33 @@ main > .calendario:first-child {
 .kpis + .proximas {
   margin-top: 0;
 }
+
+/* Evaluaciones guardadas. */
+.guardadas {
+  margin-top: 15px;
+}
+.guardadas .filtros .grow {
+  flex: 1;
+}
+.guardadas input[type="search"] {
+  min-width: 240px;
+}
+.g-total {
+  font-size: 14px;
+  font-weight: normal;
+  opacity: 0.8;
+  margin-left: 6px;
+}
+#guardadas-tabla {
+  table-layout: auto;
+  font-size: 14px;
+}
+#guardadas-tabla th,
+#guardadas-tabla td {
+  overflow-wrap: normal;
+}
+a.button.mini {
+  font-size: 12px;
+  padding: 4px 8px;
+  text-decoration: none;
+}

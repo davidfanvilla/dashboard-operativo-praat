@@ -3,7 +3,10 @@
 const F = FORMATO;
 const KEY = "praat-formato-" + F.id;
 const KEY_CRONO = "praat-cronograma-simuladores-v1";
-const BLANCO = new URLSearchParams(location.search).has("blanco");
+const PARAMS = new URLSearchParams(location.search);
+const BLANCO = PARAMS.has("blanco");
+const ABRIR = PARAMS.get("abrir"); // id de una evaluación guardada
+const SOLO_VER = !!ABRIR && PARAMS.has("imprimir"); // abrir solo para imprimir, sin tocar el borrador
 const esc = (x) =>
   String(x ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const pad = (n) => String(n).padStart(2, "0");
@@ -115,10 +118,100 @@ function nuevoEstado() {
     }
   return e;
 }
+// Borrador automático: cualquier cambio marca la evaluación como «sin guardar».
 function guardar() {
-  if (BLANCO) return;
+  if (BLANCO || SOLO_VER) return;
+  estado._sinGuardar = true;
+  guardarBorrador();
+}
+function guardarBorrador() {
+  if (BLANCO || SOLO_VER) return;
   localStorage.setItem(KEY, JSON.stringify(estado));
-  $("#guardado").textContent = "Borrador guardado en este navegador · " + new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" });
+  mostrarEstadoGuardado();
+}
+function mostrarEstadoGuardado() {
+  const el = $("#guardado");
+  if (BLANCO) return (el.textContent = "Formato en blanco: no se guarda nada.");
+  if (SOLO_VER) return (el.textContent = "Vista de una evaluación guardada.");
+  const rec = estado._registro && Almacen.local().find((x) => x.id === estado._registro);
+  if (estado._sinGuardar) el.textContent = rec ? "Cambios sin guardar" : "Evaluación sin guardar";
+  else if (rec)
+    el.textContent =
+      "Guardada " + new Date(rec.actualizado).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" }) + (rec.enviado ? " · en Google Sheets" : Almacen.url ? " · pendiente de enviar" : "");
+  else el.textContent = "";
+}
+
+/* ---------- Guardar la evaluación terminada ---------- */
+function fechaISO(name) {
+  const d = Number(estado[name + "_d"]),
+    m = Number(estado[name + "_m"]),
+    a = Number(estado[name + "_a"]);
+  return a > 2000 && m >= 1 && m <= 12 && d >= 1 && d <= new Date(a, m, 0).getDate() ? `${a}-${pad(m)}-${pad(d)}` : null;
+}
+// Reduce las firmas para que cada evaluación quepa en una celda de Google Sheets.
+function reducirFirma(url) {
+  return new Promise((ok) => {
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement("canvas");
+      c.width = 400;
+      c.height = 127;
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      ok(c.toDataURL("image/png"));
+    };
+    img.onerror = () => ok(url);
+    img.src = url;
+  });
+}
+async function guardarEvaluacion() {
+  const r = F.resumen;
+  const evaluado = (estado[r.evaluado] || "").trim(),
+    fecha = fechaISO(r.fecha);
+  const faltan = [!evaluado && r.evaluadoTexto, !fecha && "la fecha completa"].filter(Boolean);
+  if (faltan.length) return toast("Para guardar falta: " + faltan.join(" y ") + ".");
+  const datos = { ...estado };
+  delete datos._registro;
+  delete datos._sinGuardar;
+  for (const k of Object.keys(datos)) if (/^firma\d+$/.test(k) && datos[k]) datos[k] = await reducirFirma(datos[k]);
+  const marcas = Object.entries(datos).filter(([k]) => /^p\d+s\d+i\d+$/.test(k));
+  const ahora = new Date().toISOString();
+  const previo = estado._registro ? Almacen.local().find((x) => x.id === estado._registro) : null;
+  const rec = {
+    id: estado._registro || F.id + "-" + Date.now().toString(36),
+    formato: F.id,
+    formatoNombre: F.nombre,
+    pagina: location.pathname.split("/").pop(),
+    fecha,
+    evaluado,
+    evaluador: (estado[r.evaluador] || "").trim(),
+    detalle: r.detalle ? (estado[r.detalle] || "").trim() : "",
+    s: marcas.filter(([, v]) => v === "S").length,
+    t: marcas.filter(([, v]) => v === "T").length,
+    guardado: previo?.guardado || ahora,
+    actualizado: ahora,
+    datos,
+    enviado: false,
+  };
+  try {
+    Almacen.guardarLocal(rec);
+  } catch (e) {
+    return toast(e.message);
+  }
+  estado._registro = rec.id;
+  estado._sinGuardar = false;
+  guardarBorrador();
+  let msg = "Evaluación guardada en este equipo.";
+  try {
+    if (await Almacen.enviar(rec)) {
+      rec.enviado = true;
+      Almacen.guardarLocal(rec);
+      msg = "Evaluación guardada en Google Sheets.";
+    }
+  } catch (e) {
+    msg = "Guardada en este equipo, pero no se pudo enviar a Google Sheets (" + e.message + "). Se puede reenviar desde «Evaluaciones guardadas».";
+  }
+  mostrarEstadoGuardado();
+  toast(msg + ' <a href="./#guardadas">Ver evaluaciones guardadas</a>', true);
 }
 function pintar() {
   document.querySelectorAll("#formato input, #formato textarea").forEach((el) => (el.value = estado[el.name] ?? ""));
@@ -133,7 +226,7 @@ function pintar() {
     ctx.clearRect(0, 0, cv.width, cv.height);
     if (estado[cv.dataset.firma]) {
       const img = new Image();
-      img.onload = () => ctx.drawImage(img, 0, 0);
+      img.onload = () => ctx.drawImage(img, 0, 0, cv.width, cv.height);
       img.src = estado[cv.dataset.firma];
     }
   });
@@ -200,12 +293,13 @@ function eventos() {
   $("#imprimir").onclick = () => window.print();
   $("#blanco").onclick = () => window.open(location.pathname + "?blanco=1", "_blank");
   $("#nuevo").onclick = () => {
-    if (!confirm("¿Borrar lo capturado y empezar un formato nuevo? Imprime o guarda en PDF antes si lo necesitas.")) return;
+    if (estado._sinGuardar && !confirm("Hay cambios sin guardar. ¿Empezar un formato nuevo de todos modos?")) return;
     estado = nuevoEstado();
     pintar();
-    guardar();
+    guardarBorrador();
     actualizarRegistro();
   };
+  $("#guardar").onclick = guardarEvaluacion;
   if (F.cronograma) {
     $("#formato").addEventListener("input", actualizarRegistro);
     $("#reg-btn").onclick = registrar;
@@ -310,13 +404,32 @@ function toast(t, html) {
   toast.t = setTimeout(() => (el.style.display = "none"), 6000);
 }
 
-construir();
-cargar();
-pintar();
-eventos();
-actualizarRegistro();
-if (BLANCO) {
-  $("#guardado").textContent = "Formato en blanco: no se guarda nada.";
+async function iniciar() {
+  construir();
+  cargar();
+  if (ABRIR) {
+    const rec = await Almacen.buscar(ABRIR).catch(() => null);
+    if (!rec) toast("No se encontró esa evaluación guardada.");
+    else if (SOLO_VER) estado = { ...rec.datos, _registro: rec.id };
+    else if (!estado._sinGuardar || estado._registro === rec.id || confirm("El formato actual tiene cambios sin guardar. ¿Abrir la evaluación guardada de todos modos?")) {
+      if (!Almacen.local().some((x) => x.id === rec.id)) Almacen.guardarLocal(rec);
+      estado = { ...rec.datos, _registro: rec.id, _sinGuardar: false };
+      guardarBorrador();
+    }
+    if (!SOLO_VER) history.replaceState(null, "", location.pathname);
+  }
+  pintar();
+  eventos();
+  actualizarRegistro();
+  mostrarEstadoGuardado();
+  if (SOLO_VER) {
+    document.querySelector(".registro")?.remove();
+    setTimeout(() => window.print(), 500);
+  }
+  if (BLANCO) iniciarBlanco();
+}
+iniciar();
+function iniciarBlanco() {
   document.querySelector(".registro")?.remove();
   document.title += " (en blanco)";
   setTimeout(() => window.print(), 400);

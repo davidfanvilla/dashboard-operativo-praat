@@ -4,18 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Lista de verificación de desempeño · Instructor de simulador · PRAAT</title>
-    <link rel="stylesheet" href="formato.css?v=1" />
+    <link rel="stylesheet" href="formato.css?v=2" />
   </head>
   <body>
     <div class="barra">
       <a href="../">← Cronograma</a>
       <a href="./">Formatos</a>
+      <a href="./#guardadas">Evaluaciones guardadas</a>
       <span class="grow"></span>
       <span class="guardado" id="guardado"></span>
       <button type="button" id="nuevo">Nuevo formato</button>
       <button type="button" id="blanco">Imprimir en blanco</button>
       <a class="boton" href="originales/Formato_Supervision_Instructor_Simulador.docx" download>Descargar original (Word)</a>
-      <button type="button" class="primary" id="imprimir">Imprimir / PDF</button>
+      <button type="button" id="imprimir">Imprimir / PDF</button>
+      <button type="button" class="primary" id="guardar">Guardar evaluación</button>
     </div>
     <main id="formato"></main>
     <section class="registro" id="registro">
@@ -29,6 +31,9 @@
       // Contenido copiado del archivo Formato_Supervision_Instructor_Simulador.docx.
       const FORMATO = {
         id: "supervision-instructor",
+        nombre: "Supervisión instructor de simulador",
+        // Datos que se muestran en «Evaluaciones guardadas» y en Google Sheets.
+        resumen: { evaluado: "instructor", evaluadoTexto: "el nombre del instructor", evaluador: "supervisor", fecha: "fecha", detalle: "proxima" },
         titulos: ["EVALUACIÓN DE VUELO - FASE INICIAL", "(MONOMOTOR / BIMOTOR BÁSICO)"],
         subtitulos: [
           { texto: "LISTA DE VERIFICACIÓN DE DESEMPEÑO", color: "navy", tam: "9.5pt" },
@@ -62,6 +67,8 @@
       };
     </script>
     <script src="../datos.js?v=20261124"></script>
-    <script src="formato.js?v=1"></script>
+    <script src="config.js?v=1"></script>
+    <script src="almacen.js?v=1"></script>
+    <script src="formato.js?v=3"></script>
   </body>
 </html>

@@ -421,3 +421,11 @@ hr.linea {
     print-color-adjust: exact;
   }
 }
+
+/* Botón Guardar y aviso de cambios pendientes. */
+.barra #guardar {
+  font-weight: bold;
+}
+.guardado {
+  font-weight: bold;
+}

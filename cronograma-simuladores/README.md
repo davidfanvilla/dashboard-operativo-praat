@@ -49,7 +49,10 @@ En [formatos/](formatos/) están los dos formatos para llenar en línea o imprim
 
 Los archivos Word originales están sin cambios en `formatos/originales/`. Las versiones web copian su contenido tal cual; si cambias un Word, actualiza también el texto en el bloque `FORMATO` del HTML correspondiente.
 
-- Lo capturado se guarda como borrador en el navegador. **Nuevo formato** lo borra.
+- **Guardar evaluación** guarda el formato terminado (con marcas, observaciones y firmas). Se pide al menos el nombre del evaluado y la fecha. Si después la abres y corriges, vuelve a pulsar **Guardar evaluación** y se actualiza la misma evaluación.
+- **Evaluaciones guardadas** (en la página de formatos) lista todo lo guardado: **Abrir** para revisar o corregir, **Imprimir**, **Eliminar**, y **Exportar / Importar respaldo**.
+- Sin configurar nada, se guardan solo en el navegador del equipo donde se llenaron. Para que se guarden en Google Sheets y se vean desde cualquier equipo, sigue [formatos/apps-script/LEEME.md](formatos/apps-script/LEEME.md) (una sola vez) y pega la URL en `formatos/config.js`.
+- Mientras llenas, el formato se conserva como borrador en el navegador y la barra indica si hay cambios sin guardar. **Nuevo formato** empieza uno vacío (avisa si hay cambios sin guardar).
 - **Imprimir / PDF** imprime en tamaño carta, en 2 páginas, como el original. **Imprimir en blanco** abre el formato vacío.
 - Las firmas se pueden dibujar con el mouse, el dedo o un lápiz.
 - En el formato del instructor, **Registrar en el cronograma** guarda la supervisión: «6 m» cuenta como aprobatoria y «3 m» como no aprobatoria, y programa la siguiente. Si había una evaluación programada para ese simulador (o «Por confirmar»), se marca como realizada.
