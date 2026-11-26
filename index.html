@@ -11,7 +11,7 @@
       <h1 data-texto="pagina">Dashboard Operativo PRAAT</h1>
     </header>
     <div class="dates" id="dates"></div>
-    <p class="dates">No confirmados: corte del 22 de noviembre, con turnos del 23 al 29. Cancelaciones: eventos registrados del 1 al 22 de noviembre, según la fecha de registro.</p><div class="history-nav"><strong>Historial:</strong> <a href="./">Dashboard actual</a> <a href="historial/2026-11-05/">Versión anterior · 5 nov 2026</a> <a href="historial/2026-11-19/">Corte · 19 nov 2026</a> <a href="historial/2026-11-20/">Corte · 20 nov 2026</a> <a href="historial/2026-11-23/">Corte · 23 nov 2026</a> <a href="historial/2026-11-24/">Corte · 24 nov 2026 (previo a incidencias)</a></div><section class="week-note"><b>Corte de mantenimiento · 24 de noviembre de 2026</b><p id="week-summary"></p></section>
+    <p class="dates">No confirmados: corte del 22 de noviembre, con turnos del 23 al 29. Cancelaciones: eventos registrados del 1 al 22 de noviembre, según la fecha de registro.</p><div class="history-nav"><strong>Historial:</strong> <a href="./">Dashboard actual</a> <a href="historial/2026-11-05/">Versión anterior · 5 nov 2026</a> <a href="historial/2026-11-19/">Corte · 19 nov 2026</a> <a href="historial/2026-11-20/">Corte · 20 nov 2026</a> <a href="historial/2026-11-23/">Corte · 23 nov 2026</a> <a href="historial/2026-11-24/">Corte · 24 nov 2026 (previo a incidencias)</a> <a href="historial/2026-11-24-incidencias/">Corte · 24 nov 2026 (incidencias al 22)</a></div><section class="week-note"><b>Corte de mantenimiento · 26 de noviembre de 2026</b><p id="week-summary"></p></section>
     <main>
       <section id="kpis" class="kpis"></section>
       <div class="mainrow">
@@ -57,24 +57,24 @@
         </section>
       </div>
       <section class="panel training" id="servicios-programados" aria-labelledby="titulo-servicios">
-        <h2 id="titulo-servicios">Entradas a servicio programadas · 19–22 nov 2026</h2>
-        <p>Según los roles del 16 al 22 de noviembre. Para QET se usó la revisión del 18 de noviembre. Cada bloque equivale a 2 h programadas.</p>
+        <h2 id="titulo-servicios">Entradas a servicio programadas · 23–29 nov 2026</h2>
+        <p>Bloques disponibles en el rol por base: <span id="role-availability"></span>. Cada bloque equivale a 2 h programadas.</p>
         <div class="tablewrap">
-          <table aria-labelledby="titulo-servicios" style="min-width: 480px">
-            <thead><tr><th scope="col">Base</th><th scope="col">Matrícula</th><th scope="col">Servicio</th><th scope="col">Bloqueado en el rol</th></tr></thead>
+          <table aria-labelledby="titulo-servicios" style="min-width: 620px">
+            <thead><tr><th scope="col">Base</th><th scope="col">Matrícula</th><th scope="col">Servicio según reporte</th><th scope="col">Bloqueado en el rol</th><th scope="col">Bloques</th><th scope="col">Horas</th></tr></thead>
             <tbody>
-              <tr data-base="QUET"><td>QUET</td><td>XB-OHB</td><td>E2</td><td>Jueves 19 y viernes 20</td></tr>
-              <tr data-base="JJC"><td>JJC</td><td>XB-PDM</td><td>E3</td><td>Jueves 19</td></tr>
-              <tr data-base="QUET"><td>QUET</td><td>XB-OGV</td><td>E1</td><td>Sábado 21</td></tr>
-              <tr data-base="QUET"><td>QUET</td><td>XB-NAP</td><td>E1</td><td>Domingo 22</td></tr>
-              <tr data-base="PBC"><td>PBC</td><td>XB-PMJ</td><td>E1</td><td>Domingo 22</td></tr>
+              <tr data-base="QET"><td>QET</td><td>XB-RHP</td><td>E2 en servicio</td><td>Miércoles 25 y jueves 26</td><td>12</td><td>24 h</td></tr>
+              <tr data-base="QET"><td>QET</td><td>XB-PLH</td><td>E2 en servicio</td><td>Jueves 26 y viernes 27</td><td>12</td><td>24 h</td></tr>
+              <tr data-base="QET"><td>QET</td><td>XB-PDL</td><td>E4</td><td>Sábado 28 y domingo 29</td><td>12</td><td>24 h</td></tr>
+              <tr data-base="PBC"><td>PBC</td><td>XB-PMJ</td><td>E1</td><td>Sábado 28</td><td>5</td><td>10 h</td></tr>
+              <tr data-base="JJC"><td>JJC</td><td>XB-OWB</td><td>E3</td><td>Domingo 29</td><td>5</td><td>10 h</td></tr>
             </tbody>
+            <tfoot><tr><th scope="row" colspan="4">Total bloqueado por servicio</th><td>46</td><td>92 h</td></tr></tfoot>
           </table>
         </div>
-        <p><strong>Corte posterior, 24 de noviembre.</strong> XB-OGV y XB-OHB figuran GO sin observación de servicio. La tabla muestra los bloqueos del rol del 16 al 22 de noviembre.</p>
-        <p><strong>Regreso pendiente de confirmación.</strong> Los días bloqueados reflejan el rol. Para calcular los días en tierra y la fecha de regreso falta confirmar la duración del servicio y la liberación de cada avión.</p>
+        <p>El rol marca los bloques de servicio. El reporte del 26 identifica el servicio actual o el próximo evento. Los bloques representan horas de programación y la fecha efectiva de regreso depende de la liberación de cada avión.</p>
       </section>
-      <section class="panel weekly-report"><h2>Reporte de flota · 24 nov 2026</h2><details><summary>Ver las 23 aeronaves, estados y remanentes del reporte</summary><div class="tablewrap"><table id="report-table"></table></div></details><p class="foot">GO = Good to go · AOG = Aircraft On Ground · OVH = Overhaul. Las fechas de cada fila son las del reporte. «No indicado» no equivale a cero.</p></section><section class="panel training">
+      <section class="panel weekly-report"><h2>Reporte de flota · 26 nov 2026</h2><details><summary>Ver las 23 aeronaves, estados y remanentes del reporte</summary><div class="tablewrap"><table id="report-table"></table></div></details><p class="foot">GO = Good to go · AOG = Aircraft On Ground · OVH = Overhaul. Las fechas de cada fila son las del reporte. «No indicado» no equivale a cero.</p></section><section class="panel training">
         <h2 data-texto="formacion">
           Formación y disponibilidad de instructores
         </h2>
@@ -90,7 +90,7 @@
         <div id="messages"></div>
       </section>
       <p class="source">
-        Fuente de mantenimiento: PRAAT-MNT-CR-003/26, 24/11/2026. Fuentes de incidencias: «No Confirmados 2026 11 22.xlsx» y «Cancelaciones al 2026 11 22.xlsx». Datos de alumnos y demanda: imagen “Dashboard Operativo PRAAT”.
+        Fuente de mantenimiento: PRAAT-MNT-CR-003/26, 26/11/2026. Fuente de programación: roles de QET, PBC y JJC del 23 al 29 de noviembre. Fuentes de incidencias: «No Confirmados 2026 11 22.xlsx» y «Cancelaciones al 2026 11 22.xlsx». Datos de alumnos y demanda: imagen “Dashboard Operativo PRAAT”.
         <span id="saved">Datos iniciales de la referencia.</span>
       </p>
       <p id="warning" class="warning"></p>
@@ -131,8 +131,8 @@
       </form>
     </dialog>
     <div id="toast" role="status"></div>
-    <script src="datos.js?v=incidencias-20261122"></script>
+    <script src="datos.js?v=operativo-20261126"></script>
     <script src="textos.js?v=semanal-20261119"></script>
-    <script src="app.js?v=mantenimiento-20261123"></script>
+    <script src="app.js?v=operativo-20261126"></script>
   </body>
 </html>

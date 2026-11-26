@@ -70,6 +70,7 @@ Las bases son **QET = Querétaro**, **PBC = Puebla**, **JJC = Atizapán**. Conse
 | `hours` | Horas pendientes |
 | `mono` / `bi` | Monomotores / bimotores en rol |
 | `assigned` | Asignaciones semanales |
+| `available` | Bloques disponibles según el rol |
 | `unconfirmed` | No confirmados |
 | `cancel` | Cancelaciones de esa base |
 | `near` | Alumnos con 10 h o menos pendientes |
@@ -109,7 +110,8 @@ Los archivos están formateados con sangría. Puedes abrirlos en un editor de te
 
 ## Ediciones semanales e historial
 
-- [Dashboard actual](https://davidfanvilla.github.io/dashboard-operativo-praat/): mantenimiento al 24/11/2026 e incidencias al 22/11/2026.
+- [Dashboard actual](https://davidfanvilla.github.io/dashboard-operativo-praat/): mantenimiento al 26/11/2026, roles del 23 al 29 e incidencias al 22/11/2026.
+- [Corte del 24/11/2026 con incidencias al 22](historial/2026-11-24-incidencias/).
 - [Corte del 24/11/2026 previo a la actualización de incidencias](historial/2026-11-24/).
 - [Corte del 23/11/2026](historial/2026-11-23/).
 - [Corte del 20/11/2026](historial/2026-11-20/).
@@ -121,10 +123,10 @@ Las copias históricas incluyen su propio HTML, estilos, títulos, datos y lógi
 
 Cada edición tiene una clave de guardado local independiente. Los JSON de otra edición no sustituyen el reporte actual. No cambies la fecha de edición al editar datos: identifica la versión de guardado.
 
-El PDF del 19/11/2026 solo actualiza mantenimiento y estados de flota. Se mantienen el corte de alumnos/demanda del 05/11, roles 02–08/11 e incidencias al 01/11. La capacidad teórica de 840 h sigue asociada a ese rol anterior.
+El corte de mantenimiento se publica por separado de los roles de vuelo, las incidencias y el corte de alumnos y demanda. La capacidad teórica se calcula sobre las aeronaves en rol y no descuenta los bloqueos de servicio ni los descansos.
 
-En la edición semanal, `fleetRecords` es el registro fuente: 23 aeronaves, 11 GO, 11 AOG y 1 OVH. Los totales GO se calculan desde ese registro. `goMono`, `goBi`, `totalMono` y `totalBi` permanecen como referencia anterior; no se usan para presentar el desglose de tipo de la flota semanal porque este PDF no lo especifica. Los campos `mono` y `bi` de las bases siguen describiendo el rol histórico, no el estado actual de mantenimiento.
+En la edición semanal, `fleetRecords` es el registro fuente: 23 aeronaves en el reporte actual. Los totales GO se calculan desde ese registro. `goMono`, `goBi`, `totalMono` y `totalBi` permanecen como referencia anterior; no se usan para presentar el desglose de tipo de la flota semanal porque este PDF no lo especifica. Los campos `mono` y `bi` de las bases describen la composición del rol. Al publicar un nuevo rol, `rolesStart` permite incorporar sus cifras sin reemplazar otros datos guardados.
 
-Las matrículas OHB y PDM están clasificadas GO en el documento, con observaciones «EN SERVICIO E2» y «EN SERVICIO E3»; se conserva esa clasificación junto con su salvedad. Los remanentes no indicados se representan con `null`, nunca con cero.
+Los estados se conservan como aparecen en el reporte. Una observación «EN SERVICIO» se muestra junto al remanente y también se conserva en el reporte detallado. Los remanentes no indicados se representan con `null`, nunca con cero.
 
 Para otra semana, crea primero una copia histórica de la edición publicada y después actualiza `maintenanceCut`, `sourceReport`, `fleetRecords`, `maintenance` y `maintenanceNote`. Conserva `edition` para mantener la compatibilidad con los datos guardados. Conserva los cortes de los indicadores que no tengan una fuente nueva.

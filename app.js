@@ -59,6 +59,11 @@ function validate(d) {
     }
   }
   // Incorpora los nuevos cortes cuando la copia guardada es anterior.
+  const newRoles = Boolean(initial.rolesStart && (!d.rolesStart || d.rolesStart < initial.rolesStart));
+  if (newRoles) {
+    d.rolesStart = initial.rolesStart;
+    d.roles = initial.roles;
+  }
   const newUnconfirmed = !d.unconfirmedCut || d.unconfirmedCut < initial.unconfirmedCut;
   const newCancellations = d.incidents < initial.incidents;
   if (newUnconfirmed) d.unconfirmedCut = initial.unconfirmedCut;
@@ -69,6 +74,10 @@ function validate(d) {
   }
   d.bases.forEach((base, index) => {
     const published = initial.bases.find((item) => item.name === base.name) || initial.bases[index];
+    if (newRoles) {
+      base.assigned = published.assigned;
+      base.available = published.available;
+    }
     if (newUnconfirmed) base.unconfirmed = published.unconfirmed;
     if (newCancellations) base.cancel = published.cancel;
   });
@@ -108,6 +117,8 @@ function validate(d) {
     ])
       if (!Number.isFinite(b[k]) || b[k] < 0)
         throw Error("Valor inválido: " + k);
+    if (b.available !== undefined && (!Number.isInteger(b.available) || b.available < 0))
+      throw Error("Bloques disponibles inválidos.");
     if (b.near > b.students)
       throw Error(
         "Los alumnos próximos a completar no pueden superar el total de alumnos.",
@@ -216,7 +227,12 @@ function render() {
   $("students").innerHTML =
     `<div class="bigicon">♧</div><ul><li><b>${fmt(sum("near"))}</b> alumnos tienen 10 h o menos pendientes</li><li>Horas requeridas para ese grupo: <b>${fmt(sum("nearHours"), 1)} h</b></li><li>Distribución:<br>${data.bases.map((b) => `— &nbsp;<b class="base-label" data-base="${esc(b.name)}">${esc(b.name)}</b> &nbsp;${fmt(b.near)} alumnos / ${fmt(b.nearHours, 1)} h`).join("<br>")}</li></ul>`;
   $("maintenance").innerHTML =
-    `<div class="bigicon">⚠</div><ul>${data.maintenance.map((m) => `<li><b>${esc(m.id)}</b> · <span class="base-label" data-base="${esc(maintenanceBaseLabel(m))}">${esc(maintenanceBaseLabel(m))}</span>: ${fmt(m.hours, 1)} h al próximo servicio (${esc(m.service)})</li>`).join("")}</ul><aside>ⓘ &nbsp;${esc(data.maintenanceNote)}</aside>`;
+    `<div class="bigicon">⚠</div><ul>${data.maintenance.map((m) => {
+      const base = maintenanceBaseLabel(m);
+      const observation = data.fleetRecords?.find((r) => r.id === m.id)?.note;
+      const inService = observation?.startsWith("EN SERVICIO");
+      return `<li><b>${esc(m.id)}</b> · <span class="base-label" data-base="${esc(base)}">${esc(base)}</span>: ${fmt(m.hours, 1)} h al próximo servicio (${esc(m.service)})${inService ? ` · <strong>${esc(observation)}</strong>` : ""}</li>`;
+    }).join("")}</ul><aside>ⓘ &nbsp;${esc(data.maintenanceNote)}</aside>`;
   const messages = data.bases.map(
     (b) =>
       `<b>${esc(b.name)}</b><br>Alumnos: <b>${fmt(b.students)}</b><br>Horas pendientes: <b>${fmt(b.hours, 1)} h</b><br>Aeronaves en rol: <b>${b.mono + b.bi}</b><br>Instructores: <b>${fmt(b.instructors)}</b><br>Alumnos por instructor: <b>${b.instructors ? fmt(b.students / b.instructors, 1) : "—"}</b><br>Asignaciones: <b>${fmt(b.assigned)}</b><br>Cancelaciones (${esc(data.period)}): <b>${fmt(b.cancel)}</b>`,
@@ -260,7 +276,7 @@ function save(d) {
   render();
   toast("Cambios guardados en este navegador");
 }
-const labels = { ...ETIQUETAS_EDITOR, incidents: "Corte de cancelaciones", unconfirmedCut: "Corte de no confirmados" };
+const labels = { ...ETIQUETAS_EDITOR, incidents: "Corte de cancelaciones", unconfirmedCut: "Corte de no confirmados", available: "Bloques disponibles en el rol" };
 function field(path, k, v) {
   const numeric = typeof v === "number";
   return `<label class="field">${esc(labels[k] || k)}<input name="${path}" type="${numeric ? "number" : ["cut", "incidents", "unconfirmedCut"].includes(k) ? "date" : "text"}" ${numeric ? 'min="0" step="' + (["hours", "nearHours", "duration"].includes(k) ? "0.1" : "1") + '"' : ""} value="${esc(v)}" required></label>`;
@@ -268,7 +284,7 @@ function field(path, k, v) {
 function openEditor() {
   let html = "<fieldset><legend>General, flota y programación</legend>";
   for (const [k, v] of Object.entries(data))
-    if (!Array.isArray(v) && !["goMono","goBi","totalMono","totalBi"].includes(k)) html += field(k, k, v);
+    if (!Array.isArray(v) && !["goMono","goBi","totalMono","totalBi","rolesStart"].includes(k)) html += field(k, k, v);
   html += "</fieldset>";
   data.bases.forEach(
     (b, i) =>
@@ -366,8 +382,10 @@ function renderWeeklyReport() {
   const ovh = records.filter(r => r.status === "OVH").length;
   $("fleet").innerHTML = '<div class="fleetcard"><div><b>Flota en reporte</b><br><strong>' + records.length + '</strong> aeronaves</div><div><p><b>' + go + '</b> GO</p><p><b>' + aog + '</b> AOG · <b>' + ovh + '</b> OVH</p></div></div><div class="fleetcard"><div><b>GO por base</b><br><strong>' + go + '</strong> aeronaves</div><div>' + data.bases.map(b => '<p><b class="base-label" data-base="' + esc(b.name) + '">' + esc(b.name) + '</b>: ' + records.filter(r=>r.base===b.name && r.status==="GO").length + '</p>').join('') + '</div></div><p class="foot">Corte: ' + esc(data.maintenanceCut) + '. El reporte no distingue monomotor y bimotor.</p>';
   $("report-table").innerHTML = '<thead><tr>' + ['Base','Estado','Matrícula','Remanente (h)','OVH motor (h)','OVH hélice (h)','Fecha de registro','Próximo evento','Observación'].map(t=>'<th>'+t+'</th>').join('') + '</tr></thead><tbody>' + records.map(r=>'<tr data-base="' + esc(r.base) + '">' + [r.base,r.status,r.id,r.hours===null?'No indicado':fmt(r.hours,1),r.engine===null?'—':fmt(r.engine,1),r.propeller===null?'—':fmt(r.propeller,1),r.date,r.service,r.note||'—'].map(v=>'<td>'+esc(v)+'</td>').join('') + '</tr>').join('') + '</tbody>';
-  $("week-summary").textContent = 'Actualización de mantenimiento al ' + data.maintenanceCut + ': ' + go + ' GO, ' + aog + ' AOG y ' + ovh + ' OVH. Por base: ' + data.bases.map(b => b.name + ': ' + records.filter(r => r.base === b.name && r.status === 'GO').length + ' GO').join('; ') + '. Los indicadores operativos tienen cortes propios en el encabezado. La capacidad de 840 h corresponde al rol del 02–08 nov, no a una capacidad recalculada de esta semana.';
+  $("role-availability").innerHTML = data.bases.map((b) =>
+    `<span class="base-label" data-base="${esc(b.name)}">${esc(b.name)}</span> ${b.available === undefined ? "—" : fmt(b.available)}`
+  ).join(" · ");
+  $("week-summary").textContent = 'Actualización de mantenimiento al ' + data.maintenanceCut + ': ' + go + ' GO, ' + aog + ' AOG y ' + ovh + ' OVH. Por base: ' + data.bases.map(b => b.name + ': ' + records.filter(r => r.base === b.name && r.status === 'GO').length + ' GO').join('; ') + '. Los indicadores operativos tienen cortes propios en el encabezado. La capacidad teórica usa la flota del rol y no descuenta servicio ni descansos.';
 }
 
 render();
-

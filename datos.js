@@ -1,7 +1,7 @@
 // EDICIÓN SEMANAL. El corte de mantenimiento se actualiza por separado.
 const DATOS_INICIALES = {
   "cut": "2026-11-05",
-  "roles": "02–08 nov 2026",
+  "roles": "23–29 nov 2026",
   "incidents": "2026-11-22",
   "unconfirmedCut": "2026-11-22",
   "period": "1–22 nov 2026",
@@ -14,7 +14,7 @@ const DATOS_INICIALES = {
   "goBi": 2,
   "cancellations": 71,
   "trainingNote": "IFR/NOC y bimotor se vuelan únicamente en Querétaro. Cap. Carreto y Cap. Castillo, incluidos en los 7 instructores de esa base, también vuelan VFR: su disponibilidad se comparte entre las tres modalidades. No realizan nocturnos toda la semana. Para iniciar bimotor, el alumno debe completar 155 h visuales y 15 h IFR/NOC.",
-  "maintenanceNote": "Los menores remanentes entre las aeronaves GO corresponden a XB-RHP (5.5 h al E2) y XB-PLH (9.1 h al E2). La nota técnica registra excesos del intervalo de 50 h para el próximo servicio: RHP motor izquierdo 53 h y derecho 53.6 h, y NTP 50.4 h.",
+  "maintenanceNote": "XB-PLH y XB-RHP figuran GO con la observación «EN SERVICIO E2». Sus 50 h corresponden al siguiente evento E3. La liberación operativa de ambas sigue por confirmar. Entre las aeronaves GO sin observación de servicio, los menores remanentes son XB-PMJ (10.1 h al E1) y XB-NCK (11.4 h al E2). El informe conserva una nota de 50.4 h para XB-NTP a considerar en su próximo servicio.",
   "bases": [
     {
       "name": "QET",
@@ -23,11 +23,12 @@ const DATOS_INICIALES = {
       "hours": 7613.4,
       "mono": 6,
       "bi": 2,
-      "assigned": 143,
+      "assigned": 159,
       "unconfirmed": 23,
       "cancel": 28,
       "near": 175,
-      "nearHours": 1086.7
+      "nearHours": 1086.7,
+      "available": 0
     },
     {
       "name": "PBC",
@@ -36,11 +37,12 @@ const DATOS_INICIALES = {
       "hours": 1816.3,
       "mono": 2,
       "bi": 0,
-      "assigned": 33,
+      "assigned": 30,
       "unconfirmed": 28,
       "cancel": 28,
       "near": 36,
-      "nearHours": 227.1
+      "nearHours": 227.1,
+      "available": 6
     },
     {
       "name": "JJC",
@@ -49,78 +51,79 @@ const DATOS_INICIALES = {
       "hours": 1449,
       "mono": 2,
       "bi": 0,
-      "assigned": 46,
+      "assigned": 20,
       "unconfirmed": 43,
       "cancel": 15,
       "near": 8,
-      "nearHours": 50.7
+      "nearHours": 50.7,
+      "available": 4
     }
   ],
   "maintenance": [
     {
-      "id": "XB-RHP",
-      "hours": 5.5,
-      "service": "E2"
-    },
-    {
-      "id": "XB-PLH",
-      "hours": 9.1,
-      "service": "E2"
-    },
-    {
-      "id": "XB-NCK",
-      "hours": 16.4,
-      "service": "E2"
-    },
-    {
-      "id": "XB-OWB",
-      "hours": 18.3,
-      "service": "E3"
-    },
-    {
       "id": "XB-PMJ",
-      "hours": 19,
+      "hours": 10.1,
       "service": "E1"
     },
     {
+      "id": "XB-NCK",
+      "hours": 11.4,
+      "service": "E2"
+    },
+    {
       "id": "XB-PDL",
-      "hours": 20.3,
+      "hours": 14.2,
       "service": "E4"
     },
     {
+      "id": "XB-OWB",
+      "hours": 16.8,
+      "service": "E3"
+    },
+    {
       "id": "XB-PBH",
-      "hours": 30.5,
+      "hours": 18.9,
       "service": "E4"
     },
     {
       "id": "XB-OGV",
-      "hours": 32.8,
+      "hours": 21.5,
       "service": "E2"
-    },
-    {
-      "id": "XB-PDM",
-      "hours": 33.6,
-      "service": "E4"
-    },
-    {
-      "id": "XB-OHB",
-      "hours": 35.7,
-      "service": "E3"
     },
     {
       "id": "XB-NTP",
-      "hours": 36.2,
+      "hours": 30.6,
       "service": "E2"
     },
     {
+      "id": "XB-OHB",
+      "hours": 31.2,
+      "service": "E3"
+    },
+    {
+      "id": "XB-PDM",
+      "hours": 31.7,
+      "service": "E4"
+    },
+    {
       "id": "XB-NAP",
-      "hours": 50,
+      "hours": 39.6,
       "service": "E2"
+    },
+    {
+      "id": "XB-PLH",
+      "hours": 50,
+      "service": "E3"
+    },
+    {
+      "id": "XB-RHP",
+      "hours": 50,
+      "service": "E3"
     }
   ],
   "edition": "2026-11-19",
-  "maintenanceCut": "2026-11-24",
-  "sourceReport": "PRAAT-MNT-CR-003/26 · 24/11/2026",
+  "maintenanceCut": "2026-11-26",
+  "sourceReport": "PRAAT-MNT-CR-003/26 · 26/11/2026",
   "fleetRecords": [
     {
       "base": "QET",
@@ -148,78 +151,78 @@ const DATOS_INICIALES = {
       "base": "QET",
       "status": "GO",
       "id": "XB-NAP",
-      "hours": 50,
+      "hours": 39.6,
       "service": "E2",
-      "date": "22/11/2026",
+      "date": "25/11/2026",
       "note": "",
-      "engine": 940.4,
-      "propeller": 740.4
+      "engine": 930,
+      "propeller": 730
     },
     {
       "base": "QET",
       "status": "GO",
       "id": "XB-NCK",
-      "hours": 16.4,
+      "hours": 11.4,
       "service": "E2",
-      "date": "23/11/2026",
+      "date": "24/11/2026",
       "note": "",
-      "engine": 1351.9,
-      "propeller": 1151.9
+      "engine": 1346.9,
+      "propeller": 1146.9
     },
     {
       "base": "QET",
       "status": "GO",
       "id": "XB-NTP",
-      "hours": 36.2,
+      "hours": 30.6,
       "service": "E2",
-      "date": "02/11/2026",
+      "date": "25/11/2026",
       "note": "",
-      "engine": 349.1,
-      "propeller": 149.1
+      "engine": 343.9,
+      "propeller": 143.9
     },
     {
       "base": "QET",
       "status": "GO",
       "id": "XB-OGV",
-      "hours": 32.8,
+      "hours": 21.5,
       "service": "E2",
-      "date": "23/11/2026",
+      "date": "25/11/2026",
       "note": "",
-      "engine": 1939.9,
-      "propeller": 1739.9
+      "engine": 1928.6,
+      "propeller": 1728.6
     },
     {
       "base": "QET",
       "status": "GO",
       "id": "XB-OHB",
-      "hours": 35.7,
+      "hours": 31.2,
       "service": "E3",
-      "date": "23/11/2026",
+      "date": "24/11/2026",
       "note": "",
-      "engine": 725,
-      "propeller": 525
+      "engine": 720.5,
+      "propeller": 520.5
     },
     {
       "base": "QET",
       "status": "GO",
       "id": "XB-PDL",
-      "hours": 20.3,
+      "hours": 14.2,
       "service": "E4",
-      "date": "23/11/2026",
+      "date": "25/11/2026",
       "note": "",
-      "engine": 880.3,
-      "propeller": 680.3
+      "engine": 874.2,
+      "propeller": 674.2
     },
     {
       "base": "QET",
       "status": "GO",
       "id": "XB-PLH",
-      "hours": 9.1,
-      "service": "E2",
-      "date": "23/11/2026",
-      "note": "",
-      "engine": 1541.7,
-      "propeller": 1264.8
+      "hours": 50,
+      "service": "E3",
+      "date": "25/11/2026",
+      "note": "EN SERVICIO E2",
+      "engine": 1532.6,
+      "propeller": 1255.7
     },
     {
       "base": "QET",
@@ -236,12 +239,12 @@ const DATOS_INICIALES = {
       "base": "QET",
       "status": "GO",
       "id": "XB-RHP",
-      "hours": 5.5,
-      "service": "E2",
-      "date": "21/11/2026",
-      "note": "",
-      "engine": 1380.6,
-      "propeller": 180.6
+      "hours": 50,
+      "service": "E3",
+      "date": "26/11/2026",
+      "note": "EN SERVICIO E2",
+      "engine": 1379,
+      "propeller": 179
     },
     {
       "base": "QET",
@@ -269,23 +272,23 @@ const DATOS_INICIALES = {
       "base": "PBC",
       "status": "GO",
       "id": "XB-PBH",
-      "hours": 30.5,
+      "hours": 18.9,
       "service": "E4",
-      "date": "22/11/2026",
+      "date": "25/11/2026",
       "note": "",
-      "engine": 1650.4,
-      "propeller": 1450.4
+      "engine": 1638.8,
+      "propeller": 1438.8
     },
     {
       "base": "PBC",
       "status": "GO",
       "id": "XB-PMJ",
-      "hours": 19,
+      "hours": 10.1,
       "service": "E1",
-      "date": "23/11/2026",
+      "date": "25/11/2026",
       "note": "",
-      "engine": 249.5,
-      "propeller": 49.5
+      "engine": 240.6,
+      "propeller": 40.6
     },
     {
       "base": "PBC",
@@ -302,23 +305,23 @@ const DATOS_INICIALES = {
       "base": "JJC",
       "status": "GO",
       "id": "XB-OWB",
-      "hours": 18.3,
+      "hours": 16.8,
       "service": "E3",
-      "date": "21/11/2026",
+      "date": "25/11/2026",
       "note": "",
-      "engine": 336.8,
-      "propeller": 1286.5
+      "engine": 335.3,
+      "propeller": 1285
     },
     {
       "base": "JJC",
       "status": "GO",
       "id": "XB-PDM",
-      "hours": 33.6,
+      "hours": 31.7,
       "service": "E4",
-      "date": "23/11/2026",
+      "date": "25/11/2026",
       "note": "",
-      "engine": 1270.4,
-      "propeller": 1070.4
+      "engine": 1268.5,
+      "propeller": 1068.5
     },
     {
       "base": "JJC",
@@ -375,5 +378,6 @@ const DATOS_INICIALES = {
       "engine": null,
       "propeller": null
     }
-  ]
+  ],
+  "rolesStart": "2026-11-23"
 };
